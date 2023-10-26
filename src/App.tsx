@@ -1,5 +1,6 @@
 import React from "react";
 import Map, { Marker } from "react-map-gl";
+import { Paper } from "@mui/material";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./App.css";
 
@@ -21,7 +22,9 @@ function App() {
           }}
           mapStyle="mapbox://styles/mapbox/streets-v11"
         >
-          <Marker latitude={location.lat} longitude={location.lng} />
+          <Marker latitude={location.lat} longitude={location.lng} onClick={()=>{}}>
+            <Paper>$20</Paper>
+          </Marker>
         </Map>
       </div>
     </div>
