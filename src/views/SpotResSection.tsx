@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
@@ -13,20 +13,26 @@ export default function SpotResSection() {
       <div>
         <TextField id="outlined-basic" variant="outlined" onChange={() => {}} />
       </div>
-      Start
-      <div>
-        <DatePicker />
-      </div>
-      <div>
-        <TimePicker />
-      </div>
-      End
-      <div>
-        <DatePicker />
-      </div>
-      <div>
-        <TimePicker />
-      </div>
+      <Grid container>
+        <Grid item>
+          Start
+          <div>
+            <DatePicker />
+          </div>
+          <div>
+            <TimePicker />
+          </div>
+        </Grid>
+        <Grid item>
+          End
+          <div>
+            <DatePicker />
+          </div>
+          <div>
+            <TimePicker />
+          </div>
+        </Grid>
+      </Grid>
       <div>
         {res.map((spotCard) => (
           <SpotCard name={spotCard} />
