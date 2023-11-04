@@ -31,6 +31,13 @@ export default function Home() {
             >
               <Paper>$20</Paper>
             </Marker>
+            <Marker
+              latitude={location.lat+.001}
+              longitude={location.lng}
+              onClick={() => {}}
+            >
+              <Paper>$20</Paper>
+            </Marker>
           </Map>
         </Grid>
         <Grid item>

@@ -13,13 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
 const pages = [
-  { text: "Account", href: "/dashboard/" },
-  { text: "Invest", href: "/dashboard/invest" },
-  { text: "Transfer", href: "/dashboard/transfer" },
-  {
-    text: "Transactions",
-    href: "/dashboard/transactions",
-  },
+  { text: "Reservations", href: "/reservations/" },
 ];
 const settings = ["Profile", "Logout"];
 
@@ -45,6 +39,11 @@ export default function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  function handleClickPage(href: string) {
+    window.location.replace(href);
+    setAnchorElUser(null);
+  }
 
   function handleClickMenuItem(setting: string) {
     if (setting === "Logout") window.location.replace("/");
@@ -105,7 +104,7 @@ export default function Navbar() {
                 <MenuItem
                   key={page.text}
                   onClick={() => {
-                    handleCloseNavMenu(page.text);
+                    handleClickPage(page.href);
                   }}
                 >
                   <Typography textAlign="center">{page.text}</Typography>
