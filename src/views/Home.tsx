@@ -16,7 +16,7 @@ export default function Home() {
       <Grid container>
         <Grid item style={{ height: "50vh", width: "50%" }}>
           <Map
-            mapboxAccessToken="pk.eyJ1IjoiYW4yODg3MDUiLCJhIjoiY2xvMmd3emlmMDdsZjJscGpmcHdrMTE5dyJ9.ecwGkQOZhDLyXtQJeSBsjw"
+            mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
             initialViewState={{
               latitude: location.lat,
               longitude: location.lng,
