@@ -1,4 +1,6 @@
-import { Grid, TextField } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import SortIcon from "@mui/icons-material/Sort";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
@@ -21,6 +23,9 @@ export default function SpotResSection() {
           <div>
             <TimePicker />
           </div>
+          <Button>
+            <SortIcon /> Sort
+          </Button>
         </Grid>
         <Grid item>
           End
@@ -30,6 +35,9 @@ export default function SpotResSection() {
           <div>
             <TimePicker />
           </div>
+          <Button>
+            <FilterAltIcon /> Filter
+          </Button>
         </Grid>
       </Grid>
       <div>
