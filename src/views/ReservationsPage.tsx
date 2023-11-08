@@ -1,7 +1,12 @@
-import React from 'react'
+import ReservationCard from "./ReservationCard";
 
 export default function ReservationsPage() {
+  const res = ["ex 1", "ex 2"];
   return (
-    <div>ReservationsPage</div>
-  )
+    <div>
+      {res.map((reservationCardInfo) => (
+        <ReservationCard reservationCardInfo={reservationCardInfo} />
+      ))}
+    </div>
+  );
 }

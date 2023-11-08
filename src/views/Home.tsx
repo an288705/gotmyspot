@@ -1,4 +1,3 @@
-import React from "react";
 import { Grid, Paper } from "@mui/material";
 import Map, { Marker } from "react-map-gl";
 import Navbar from "./Navbar";
@@ -32,7 +31,7 @@ export default function Home() {
               <Paper>$20</Paper>
             </Marker>
             <Marker
-              latitude={location.lat+.001}
+              latitude={location.lat + 0.001}
               longitude={location.lng}
               onClick={() => {}}
             >

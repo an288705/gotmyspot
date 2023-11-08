@@ -1,4 +1,3 @@
-import React from "react";
 import { Grid, TextField } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -34,8 +33,8 @@ export default function SpotResSection() {
         </Grid>
       </Grid>
       <div>
-        {res.map((spotCard) => (
-          <SpotCard name={spotCard} />
+        {res.map((spotCardInfo) => (
+          <SpotCard spotCardInfo={spotCardInfo} />
         ))}
       </div>
     </LocalizationProvider>

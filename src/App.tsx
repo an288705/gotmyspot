@@ -1,4 +1,3 @@
-import React from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./App.css";
 import RoutesProvider from "./configs/RoutesProvider";

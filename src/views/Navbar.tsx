@@ -13,13 +13,11 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
 
-const pages = [
-  { text: "Reservations", href: "/reservations/" },
-];
+const pages = [{ text: "Reservations", href: "/reservations/" }];
 const settings = ["Profile", "Logout"];
 
 export default function Navbar() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
   );
@@ -136,7 +134,7 @@ export default function Navbar() {
               <Button
                 key={page.text}
                 onClick={() => {
-                    handleClickPage(page.href);
+                  handleClickPage(page.href);
                 }}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
