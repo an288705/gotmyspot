@@ -13,8 +13,11 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
 
-const pages = [{ text: "Reservations", href: "/reservations/" }];
-const settings = ["Profile", "Logout"];
+const pages = [{ text: "Reservations", href: "/reservations" }];
+const settings = [
+  { text: "Profile", href: "/profile" },
+  { text: "Logout", href: "/logout" },
+];
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -45,9 +48,8 @@ export default function Navbar() {
     setAnchorElUser(null);
   }
 
-  function handleClickMenuItem(setting: string) {
-    if (setting === "Logout") window.location.replace("/");
-    else window.location.replace("/dashboard/" + setting);
+  function handleClickMenuItem(href: string) {
+    navigate(href);
     setAnchorElUser(null);
   }
 
@@ -167,10 +169,10 @@ export default function Navbar() {
             >
               {settings.map((setting) => (
                 <MenuItem
-                  key={setting}
-                  onClick={() => handleClickMenuItem(setting)}
+                  key={setting.text}
+                  onClick={() => handleClickMenuItem(setting.href)}
                 >
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Typography textAlign="center">{setting.text}</Typography>
                 </MenuItem>
               ))}
             </Menu>
