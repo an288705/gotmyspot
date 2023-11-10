@@ -1,15 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "../views/Home";
-import ReservationsPage from "../views/ReservationsPage";
-import ProfilePage from "../views/ProfilePage";
+import CustomerHome from "../views/customer/CustomerHome";
+import ReservationsPage from "../views/customer/ReservationsPage";
+import ProfilePage from "../views/customer/ProfilePage";
+import HostHome from "../views/host/HostHome";
 
 export default function RoutesProvider() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<CustomerHome />} />
         <Route path="/reservations" element={<ReservationsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/host" element={<HostHome />} />
       </Routes>
     </BrowserRouter>
   );

@@ -3,7 +3,7 @@ import Map, { Marker } from "react-map-gl";
 import Navbar from "./Navbar";
 import SpotResSection from "./SpotResSection";
 
-export default function Home() {
+export default function CustomerHome() {
   const location = {
     lat: 37.42216,
     lng: -122.08427,
