@@ -8,20 +8,13 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
 
-const pages = [
-  { text: "Dashboard", href: "/host/dashboard" },
-  { text: "Reports", href: "/host/reports" },
-  { text: "Reservations", href: "/host/reservations" },
-  { text: "Manage Spots", href: "/host/spots" },
-];
 const settings = [
-  { text: "Profile", href: "/profile" },
-  { text: "Logout", href: "/logout" },
+  { text: "Profile", href: "/host/profile" },
+  { text: "Logout", href: "/host/logout" },
 ];
 
 export default function Navbar() {
@@ -106,18 +99,7 @@ export default function Navbar() {
               sx={{
                 display: { xs: "block", md: "none" },
               }}
-            >
-              {pages.map((page) => (
-                <MenuItem
-                  key={page.text}
-                  onClick={() => {
-                    handleClickPage(page.href);
-                  }}
-                >
-                  <Typography textAlign="center">{page.text}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            ></Menu>
           </Box>
           <Typography
             variant="h5"
@@ -136,19 +118,7 @@ export default function Navbar() {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page.text}
-                onClick={() => {
-                  handleClickPage(page.href);
-                }}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                <Typography textAlign="center">{page.text}</Typography>
-              </Button>
-            ))}
-          </Box>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">

@@ -4,7 +4,7 @@ import SortIcon from "@mui/icons-material/Sort";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
-import SpotCard from "./SpotCard";
+import SpotsSection from "../sections/SpotsSection";
 
 export default function SpotResSection() {
   const res = ["ex 1", "ex 2", "ex 3"];
@@ -40,11 +40,7 @@ export default function SpotResSection() {
           </Button>
         </Grid>
       </Grid>
-      <div>
-        {res.map((spotCardInfo) => (
-          <SpotCard spotCardInfo={spotCardInfo} />
-        ))}
-      </div>
+      <SpotsSection spots={res} />
     </LocalizationProvider>
   );
 }
