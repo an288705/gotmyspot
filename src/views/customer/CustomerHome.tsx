@@ -11,7 +11,7 @@ export default function CustomerHome() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar signedIn={false} />
       <Grid container>
         <Grid item style={{ height: "50vh", width: "50%" }}>
           <Map

@@ -14,12 +14,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
 
 const pages = [{ text: "Reservations", href: "/reservations" }];
-const settings = [
+let settings = [
   { text: "Profile", href: "/profile" },
   { text: "Logout", href: "/logout" },
 ];
 
-export default function Navbar() {
+export default function Navbar(props: { signedIn: boolean }) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
@@ -28,6 +28,9 @@ export default function Navbar() {
     null,
   );
 
+  if (!props.signedIn) {
+    settings = [{ text: "Sign In", href: "/sing-in" }];
+  }
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
