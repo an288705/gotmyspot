@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SellParkingPage from "../views/SellParkingPage";
 import CustomerHome from "../views/customer/CustomerHome";
 import SignIn from "../views/auth/SignIn";
 import SignUp from "../views/auth/SignUp";
@@ -13,6 +14,7 @@ export default function RoutesProvider() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<CustomerHome />} />
+        <Route path="/sell-parking" element={<SellParkingPage />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/host-sign-up" element={<HostSignUp />} />
