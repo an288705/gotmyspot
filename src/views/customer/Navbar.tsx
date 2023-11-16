@@ -16,10 +16,11 @@ import { useNavigate } from "react-router-dom";
 const pages = [{ text: "Reservations", href: "/reservations" }];
 let settings = [
   { text: "Profile", href: "/profile" },
-  { text: "Logout", href: "/logout" },
+  { text: "Logout", href: "/" },
 ];
 
 export default function Navbar(props: { signedIn: boolean }) {
+  const [signedIn, setSignedIn] = React.useState(props.signedIn);
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
@@ -28,8 +29,8 @@ export default function Navbar(props: { signedIn: boolean }) {
     null,
   );
 
-  if (!props.signedIn) {
-    settings = [{ text: "Sign In", href: "/sing-in" }];
+  if (!signedIn) {
+    settings = [{ text: "Sign In", href: "/sign-in" }];
   }
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -52,6 +53,10 @@ export default function Navbar(props: { signedIn: boolean }) {
   }
 
   function handleClickMenuItem(href: string) {
+    if (href == "/") {
+      setSignedIn(false);
+    }
+
     navigate(href);
     setAnchorElUser(null);
   }
