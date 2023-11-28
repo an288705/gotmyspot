@@ -1,6 +1,9 @@
+import React from "react";
 import { Button, Typography } from "@mui/material";
+import { CustomerContext } from "../../controllers/contexts";
 
 export default function ProfilePage() {
+  const customer = React.useContext(CustomerContext);
   return (
     <div>
       <Typography>
@@ -8,7 +11,7 @@ export default function ProfilePage() {
         <Button>Edit</Button>
       </Typography>
       <Typography>Email</Typography>
-      <Typography>example@example</Typography>
+      <Typography>{customer.email}</Typography>
       <Typography>Password</Typography>
       <Typography>example@example</Typography>
       <Typography>Payment</Typography>

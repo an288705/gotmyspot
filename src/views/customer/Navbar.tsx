@@ -11,27 +11,33 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { CustomerContext } from "../../controllers/contexts";
 import { useNavigate } from "react-router-dom";
 
 const pages = [{ text: "Reservations", href: "/reservations" }];
-let settings = [
-  { text: "Profile", href: "/profile" },
-  { text: "Logout", href: "/" },
-];
 
-export default function Navbar(props: { signedIn: boolean }) {
-  const [signedIn, setSignedIn] = React.useState(props.signedIn);
-  const navigate = useNavigate();
+export default function Navbar() {
+  const [settings, setSettings] = React.useState<
+    { text: string; href: string }[]
+  >([{ text: "Sign In", href: "/sign-in" }]);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
   );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   );
+  const customer = React.useContext(CustomerContext);
+  const navigate = useNavigate();
 
-  if (!signedIn) {
-    settings = [{ text: "Sign In", href: "/sign-in" }];
-  }
+  React.useEffect(() => {
+    if (customer.signedIn) {
+      setSettings([
+        { text: "Profile", href: "/profile" },
+        { text: "Logout", href: "/" },
+      ]);
+    }
+  }, [customer.signedIn]);
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -53,8 +59,8 @@ export default function Navbar(props: { signedIn: boolean }) {
   }
 
   function handleClickMenuItem(href: string) {
-    if (href == "/") {
-      setSignedIn(false);
+    if (href === "/") {
+      customer.signOut();
     }
 
     navigate(href);
