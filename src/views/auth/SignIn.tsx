@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CustomerContext } from "../../controllers/contexts";
 import { useNavigate } from "react-router-dom";
+import supabase from "../../supabase/supabase";
 import CopyrightSection from "../sections/CopyrightSection";
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -22,14 +23,46 @@ const defaultTheme = createTheme();
 export default function SignIn() {
   const customer = React.useContext(CustomerContext);
   const navigate = useNavigate();
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = String(data.get("email"));
 
-    customer.signIn("test", "test", email, "911", "");
-    console.log(customer);
-    navigate("/");
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    console.log(event);
+
+    const { data: authData, error: authError } =
+      await supabase.auth.signInWithPassword({
+        email: String(formData.get("email")),
+        password: String(formData.get("password")),
+      });
+
+    if (authError) {
+      alert(authError);
+      return;
+    }
+
+    if (!authData.user) {
+      alert("issue signing in user");
+      return;
+    }
+
+    if (!authData.user.email) {
+      alert("user email not saved");
+      return;
+    }
+
+    // const { data, error } = await supabase
+    //   .from("userProfile")
+    //   .select()
+    //   .eq("userId", authData.user.id);
+
+    // if (!data) {
+    //   alert(error);
+    //   return;
+    // }
+
+    customer.signIn(authData.user.id, "", authData.user.email, "", "");
+
+    navigate("/", { replace: true });
   };
 
   return (
