@@ -12,7 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CustomerContext } from "../../controllers/contexts";
+import { HostContext } from "../../controllers/contexts";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../supabase/supabase";
 import CopyrightSection from "../sections/CopyrightSection";
@@ -20,8 +20,8 @@ import CopyrightSection from "../sections/CopyrightSection";
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function SignIn() {
-  const customer = React.useContext(CustomerContext);
+export default function HostSignIn() {
+  const host = React.useContext(HostContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -59,12 +59,14 @@ export default function SignIn() {
     //   return;
     // }
 
-    customer.signIn(
+    host.signIn(
       authData.user.id,
+      "",
       "",
       authData.user.email,
       authData.user.phone || "",
       "",
+      [],
     );
 
     navigate("/", { replace: true });
@@ -133,7 +135,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/sign-up" variant="body2">
+                <Link href="/host-sign-up" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

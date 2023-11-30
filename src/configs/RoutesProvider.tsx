@@ -3,6 +3,7 @@ import SellParkingPage from "../views/SellParkingPage";
 import CustomerHome from "../views/customer/CustomerHome";
 import SignIn from "../views/auth/SignIn";
 import SignUp from "../views/auth/SignUp";
+import HostSignIn from "../views/auth/HostSignIn";
 import HostSignUp from "../views/auth/HostSignUp";
 import ReservationsPage from "../views/customer/ReservationsPage";
 import ProfilePage from "../views/customer/ProfilePage";
@@ -17,6 +18,7 @@ export default function RoutesProvider() {
         <Route path="/sell-parking" element={<SellParkingPage />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/host-sign-in" element={<HostSignIn />} />
         <Route path="/host-sign-up" element={<HostSignUp />} />
         <Route path="/reservations" element={<ReservationsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
