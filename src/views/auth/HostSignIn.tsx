@@ -17,7 +17,7 @@ import {
 } from "../../libraries/gotmyspot-component-library";
 import { HostContext } from "../../controllers/contexts";
 import { useNavigate } from "react-router-dom";
-import { signInWithPassword } from "../../controllers/apis";
+import { handleSignInHost } from "../../controllers/apis";
 import CopyrightSection from "../sections/CopyrightSection";
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -26,53 +26,6 @@ const defaultTheme = createTheme();
 export default function HostSignIn() {
   const host = React.useContext(HostContext);
   const navigate = useNavigate();
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-
-    const { data: authData, error: authError } = await signInWithPassword(
-      String(formData.get("email")),
-      String(formData.get("password")),
-    );
-
-    if (authError) {
-      alert(authError);
-      return;
-    }
-
-    if (!authData.user) {
-      alert("issue signing in user");
-      return;
-    }
-
-    if (!authData.user.email) {
-      alert("user email not saved");
-      return;
-    }
-
-    // const { data, error } = await supabase
-    //   .from("userProfile")
-    //   .select()
-    //   .eq("userId", authData.user.id);
-
-    // if (!data) {
-    //   alert(error);
-    //   return;
-    // }
-
-    host.signIn(
-      authData.user.id,
-      "",
-      "",
-      authData.user.email,
-      authData.user.phone || "",
-      "",
-      [],
-    );
-
-    navigate("/", { replace: true });
-  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -94,7 +47,7 @@ export default function HostSignIn() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={(event) => handleSignInHost(host, event, navigate)}
             noValidate
             sx={{ mt: 1 }}
           >
