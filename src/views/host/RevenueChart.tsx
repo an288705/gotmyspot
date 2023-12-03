@@ -1,6 +1,8 @@
 import React from "react";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import {
+  Button,
+  Typography,
+} from "../../libraries/gotmyspot-component-library";
 import {
   LineChart,
   Line,

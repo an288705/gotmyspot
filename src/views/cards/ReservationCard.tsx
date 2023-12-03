@@ -1,4 +1,4 @@
-import { Card } from "@mui/material";
+import { Card } from "../../libraries/gotmyspot-component-library";
 
 export default function ReservationCard(props: {
   reservationCardInfo: string;

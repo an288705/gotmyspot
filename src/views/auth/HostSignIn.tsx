@@ -1,20 +1,23 @@
 import React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Icons,
+  Typography,
+  Container,
+  createTheme,
+  ThemeProvider,
+} from "../../libraries/gotmyspot-component-library";
 import { HostContext } from "../../controllers/contexts";
 import { useNavigate } from "react-router-dom";
-import supabase from "../../supabase/supabase";
+import { signInWithPassword } from "../../controllers/apis";
 import CopyrightSection from "../sections/CopyrightSection";
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -28,11 +31,10 @@ export default function HostSignIn() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
-    const { data: authData, error: authError } =
-      await supabase.auth.signInWithPassword({
-        email: String(formData.get("email")),
-        password: String(formData.get("password")),
-      });
+    const { data: authData, error: authError } = await signInWithPassword(
+      String(formData.get("email")),
+      String(formData.get("password")),
+    );
 
     if (authError) {
       alert(authError);
@@ -85,7 +87,7 @@ export default function HostSignIn() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
+            <Icons.LockOutlined />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in

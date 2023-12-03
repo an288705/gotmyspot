@@ -1,4 +1,7 @@
-import { Button, Typography } from "@mui/material";
+import {
+  Button,
+  Typography,
+} from "../../libraries/gotmyspot-component-library";
 import Navbar from "./Navbar";
 import RevenueChart from "./RevenueChart";
 import ReservationsSection from "../sections/ReservationsSection";

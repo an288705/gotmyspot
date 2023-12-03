@@ -1,4 +1,4 @@
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper } from "../../libraries/gotmyspot-component-library";
 import Map, { Marker } from "react-map-gl";
 import Navbar from "./Navbar";
 import SpotResSection from "./SpotResSection";

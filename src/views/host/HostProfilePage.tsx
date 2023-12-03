@@ -1,4 +1,7 @@
-import { Button, Typography } from "@mui/material";
+import {
+  Button,
+  Typography,
+} from "../../libraries/gotmyspot-component-library";
 
 export default function HostProfilePage() {
   return (

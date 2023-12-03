@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Typography } from "../../libraries/gotmyspot-component-library";
 import ReservationsSection from "../sections/ReservationsSection";
 import SpotsSection from "../sections/SpotsSection";
 

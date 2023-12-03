@@ -1,9 +1,13 @@
-import { Button, Grid, TextField } from "@mui/material";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import SortIcon from "@mui/icons-material/Sort";
+import {
+  LocalizationProvider,
+  Button,
+  Grid,
+  TextField,
+  Icons,
+  DatePicker,
+  TimePicker,
+} from "../../libraries/gotmyspot-component-library";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import SpotsSection from "../sections/SpotsSection";
 
 export default function SpotResSection() {
@@ -24,7 +28,7 @@ export default function SpotResSection() {
             <TimePicker />
           </div>
           <Button>
-            <SortIcon /> Sort
+            <Icons.Sort /> Sort
           </Button>
         </Grid>
         <Grid item>
@@ -36,7 +40,7 @@ export default function SpotResSection() {
             <TimePicker />
           </div>
           <Button>
-            <FilterAltIcon /> Filter
+            <Icons.FilterAlt /> Filter
           </Button>
         </Grid>
       </Grid>

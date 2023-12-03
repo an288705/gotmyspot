@@ -1,7 +1,10 @@
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import { Typography, Button } from "@mui/material";
+import {
+  styled,
+  Box,
+  Button,
+  Typography,
+  Container,
+} from "../libraries/gotmyspot-component-library";
 import { useNavigate } from "react-router-dom";
 
 const SellParkingPageLayoutRoot = styled("section")(({ theme }) => ({
