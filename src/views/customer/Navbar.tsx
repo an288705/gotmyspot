@@ -33,10 +33,16 @@ export default function Navbar() {
 
   React.useEffect(() => {
     if (customer.signedIn) {
-      setSettings([
-        { text: "Profile", href: "/profile" },
-        { text: "Logout", href: "/" },
-      ]);
+      if (customer.accountConfirmed) {
+        setSettings([
+          { text: "Profile", href: "/profile" },
+          { text: "Logout", href: "/" },
+        ]);
+      } else {
+        alert("Please confirm email to create account");
+      }
+    } else {
+      setSettings([{ text: "Sign In", href: "/sign-in" }]);
     }
   }, [customer.signedIn]);
 

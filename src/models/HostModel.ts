@@ -2,52 +2,57 @@ import Spot from "./interfaces/Spot";
 
 export class HostModel {
   public hostId: string;
-  public company: string;
+  public companyName: string;
   public name: string;
   public email: string;
   public phone: string;
-  public bankInfo: string;
+  public paymentInfo: string;
   public spots: Array<Spot>;
+  public accountConfirmed: boolean;
   public signedIn: boolean;
 
   constructor() {
     this.hostId = "";
-    this.company = "";
+    this.companyName = "";
     this.name = "";
     this.email = "";
     this.phone = "";
-    this.bankInfo = "";
+    this.paymentInfo = "";
     this.spots = [];
+    this.accountConfirmed = false;
     this.signedIn = false;
   }
 
   signIn = (
     hostId: string,
-    company: string,
+    companyName: string,
     name: string,
     email: string,
     phone: string,
-    bankInfo: string,
+    paymentInfo: string,
     spots: Array<Spot>,
+    accountConfirmed: boolean,
   ) => {
     this.hostId = hostId;
-    this.company = company;
+    this.companyName = companyName;
     this.name = name;
     this.email = email;
     this.phone = phone;
-    this.bankInfo = bankInfo;
+    this.paymentInfo = paymentInfo;
     this.spots = spots;
+    this.accountConfirmed = accountConfirmed;
     this.signedIn = true;
   };
 
   signOut = () => {
     this.hostId = "";
-    this.company = "";
+    this.companyName = "";
     this.name = "";
     this.email = "";
     this.phone = "";
-    this.bankInfo = "";
+    this.paymentInfo = "";
     this.spots = [];
+    this.accountConfirmed = false;
     this.signedIn = false;
   };
 }

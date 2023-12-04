@@ -1,9 +1,13 @@
+import Reservation from "./interfaces/Reservation";
+
 export class CustomerModel {
   public customerId: string;
   public name: string;
   public email: string;
   public phone: string;
-  public bankInfo: string;
+  public paymentInfo: string;
+  public reservations: Array<Reservation>;
+  public accountConfirmed: boolean;
   public signedIn: boolean;
 
   constructor() {
@@ -11,7 +15,9 @@ export class CustomerModel {
     this.name = "";
     this.email = "";
     this.phone = "";
-    this.bankInfo = "";
+    this.paymentInfo = "";
+    this.reservations = [];
+    this.accountConfirmed = false;
     this.signedIn = false;
   }
 
@@ -20,13 +26,17 @@ export class CustomerModel {
     name: string,
     email: string,
     phone: string,
-    bankInfo: string,
+    paymentInfo: string,
+    reservations: Array<Reservation>,
+    accountConfirmed: boolean,
   ) => {
     this.customerId = customerId;
     this.name = name;
     this.email = email;
     this.phone = phone;
-    this.bankInfo = bankInfo;
+    this.paymentInfo = paymentInfo;
+    this.reservations = reservations;
+    this.accountConfirmed = accountConfirmed;
     this.signedIn = true;
   };
 
@@ -35,7 +45,9 @@ export class CustomerModel {
     this.name = "";
     this.email = "";
     this.phone = "";
-    this.bankInfo = "";
+    this.paymentInfo = "";
+    this.reservations = [];
+    this.accountConfirmed = false;
     this.signedIn = false;
   };
 }

@@ -2,7 +2,7 @@ import Period from "./Period";
 import Rate from "./Rate";
 
 export default interface Spot {
-  spotId: string;
+  id: string;
   lat: number;
   long: number;
   pricing: number;

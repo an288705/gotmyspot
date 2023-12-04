@@ -15,20 +15,17 @@ import {
   createTheme,
   ThemeProvider,
 } from "../../libraries/gotmyspot-component-library";
+import { CustomerContext } from "../../controllers/contexts";
+import { useNavigate } from "react-router-dom";
 import CopyrightSection from "../sections/CopyrightSection";
+import { handleSignUpCustomer } from "../../controllers/apis";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const customer = React.useContext(CustomerContext);
+  const navigate = useNavigate();
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -51,7 +48,9 @@ export default function SignUp() {
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit}
+            onSubmit={(event) =>
+              handleSignUpCustomer(customer, event, navigate)
+            }
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>

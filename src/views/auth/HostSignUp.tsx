@@ -18,6 +18,7 @@ import {
   Fade,
 } from "../../libraries/gotmyspot-component-library";
 import CopyrightSection from "../sections/CopyrightSection";
+import { handleSignUpHost } from "../../controllers/apis";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -34,17 +35,8 @@ const style = {
 };
 
 export default function HostSignUp() {
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-
-    setOpenModal(true);
-  };
+  const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const [spotFormCount, setSpotFormCount] = React.useState<Array<number>>([1]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -58,8 +50,8 @@ export default function HostSignUp() {
         <Fade in={openModal}>
           <Box sx={style}>
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Request received, we will reach out to you regarding your
-              application
+              Your request has been received, we will reach out to you regarding
+              your application. You can learn about hosting on our seller's page
             </Typography>
           </Box>
         </Fade>
@@ -83,7 +75,10 @@ export default function HostSignUp() {
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit}
+            onSubmit={(event) => {
+              handleSignUpHost(event, spotFormCount);
+              setOpenModal(true);
+            }}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
@@ -118,6 +113,38 @@ export default function HostSignUp() {
                   autoComplete="email"
                 />
               </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="companyName"
+                  label="Company Name"
+                  name="companyName"
+                  autoComplete="companyName"
+                />
+              </Grid>
+              {spotFormCount.map((count) => (
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id={"spotAddress" + String(count)}
+                    label="Spot Address"
+                    name={"spotAddress" + String(count)}
+                    autoComplete={"spotAddress" + String(count)}
+                  />
+                </Grid>
+              ))}
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={() =>
+                  setSpotFormCount((prev) => [...prev, prev.length + 1])
+                }
+              >
+                Add another address
+              </Button>
               <Grid item xs={12}>
                 <TextField
                   required
