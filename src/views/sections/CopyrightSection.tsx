@@ -1,4 +1,4 @@
-import { Link, Typography } from "../../libraries/gotmyspot-component-library";
+import { Link, Typography } from "../../libraries/gotmyspot-ui-library";
 
 export default function CopyrightSection(props: any) {
   return (

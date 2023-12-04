@@ -6,7 +6,7 @@ import {
   Icons,
   DatePicker,
   TimePicker,
-} from "../../libraries/gotmyspot-component-library";
+} from "../../libraries/gotmyspot-ui-library";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import SpotsSection from "../sections/SpotsSection";
 

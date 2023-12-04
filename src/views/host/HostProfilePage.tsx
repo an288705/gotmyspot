@@ -1,7 +1,7 @@
 import {
   Button,
   Typography,
-} from "../../libraries/gotmyspot-component-library";
+} from "../../libraries/gotmyspot-ui-library";
 
 export default function HostProfilePage() {
   return (

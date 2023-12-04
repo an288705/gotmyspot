@@ -16,7 +16,7 @@ import {
   ThemeProvider,
   Modal,
   Fade,
-} from "../../libraries/gotmyspot-component-library";
+} from "../../libraries/gotmyspot-ui-library";
 import CopyrightSection from "../sections/CopyrightSection";
 import { handleSignUpHost } from "../../controllers/apis";
 

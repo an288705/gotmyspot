@@ -14,7 +14,7 @@ import {
   Container,
   createTheme,
   ThemeProvider,
-} from "../../libraries/gotmyspot-component-library";
+} from "../../libraries/gotmyspot-ui-library";
 import { CustomerContext } from "../../controllers/contexts";
 import { useNavigate } from "react-router-dom";
 import CopyrightSection from "../sections/CopyrightSection";

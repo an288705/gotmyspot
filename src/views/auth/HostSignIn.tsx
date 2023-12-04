@@ -14,7 +14,7 @@ import {
   Container,
   createTheme,
   ThemeProvider,
-} from "../../libraries/gotmyspot-component-library";
+} from "../../libraries/gotmyspot-ui-library";
 import { HostContext } from "../../controllers/contexts";
 import { useNavigate } from "react-router-dom";
 import { handleSignInHost } from "../../controllers/apis";

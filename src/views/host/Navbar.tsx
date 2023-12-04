@@ -11,7 +11,7 @@ import {
   Box,
   Typography,
   Container,
-} from "../../libraries/gotmyspot-component-library";
+} from "../../libraries/gotmyspot-ui-library";
 import { useNavigate } from "react-router-dom";
 
 const settings = [

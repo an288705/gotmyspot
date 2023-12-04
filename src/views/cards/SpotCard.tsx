@@ -1,4 +1,4 @@
-import { Card } from "../../libraries/gotmyspot-component-library";
+import { Card } from "../../libraries/gotmyspot-ui-library";
 
 export default function SpotCard(props: { spotInfo: string }) {
   return (

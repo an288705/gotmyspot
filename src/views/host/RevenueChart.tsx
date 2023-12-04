@@ -2,7 +2,7 @@ import React from "react";
 import {
   Button,
   Typography,
-} from "../../libraries/gotmyspot-component-library";
+} from "../../libraries/gotmyspot-ui-library";
 import {
   LineChart,
   Line,
