@@ -18,7 +18,7 @@ import {
   Fade,
 } from "../../libraries/gotmyspot-ui-library";
 import CopyrightSection from "../sections/CopyrightSection";
-import { handleSignUpHost } from "../../controllers/apis";
+import { handleHostAuth } from "../../controllers/apis";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -76,7 +76,7 @@ export default function HostSignUp() {
             component="form"
             noValidate
             onSubmit={(event) => {
-              handleSignUpHost(event, spotFormCount);
+              handleHostAuth(event, spotFormCount);
               setOpenModal(true);
             }}
             sx={{ mt: 3 }}

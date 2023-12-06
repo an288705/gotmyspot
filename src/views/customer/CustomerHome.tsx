@@ -1,9 +1,25 @@
+import React from "react";
 import { Grid, Paper } from "../../libraries/gotmyspot-ui-library";
 import Map, { Marker } from "react-map-gl";
+import { CustomerContext } from "../../controllers/contexts";
 import Navbar from "./Navbar";
 import SpotResSection from "./SpotResSection";
+import { setCustomerState } from "../../controllers/apis";
 
 export default function CustomerHome() {
+  const customer = React.useContext(CustomerContext);
+  const [settings, setSettings] = React.useState<
+    { text: string; href: string }[]
+  >([{ text: "Sign In", href: "/sign-in" }]);
+
+  async function setPageState() {
+    const state = await setCustomerState(customer);
+    setSettings(state!.settings);
+  }
+
+  React.useEffect(() => {
+    setPageState();
+  }, []);
   const location = {
     lat: 37.42216,
     lng: -122.08427,
@@ -11,7 +27,7 @@ export default function CustomerHome() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar settings={settings} />
       <Grid container>
         <Grid item style={{ height: "50vh", width: "50%" }}>
           <Map

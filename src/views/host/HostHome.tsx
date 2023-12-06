@@ -1,7 +1,4 @@
-import {
-  Button,
-  Typography,
-} from "../../libraries/gotmyspot-ui-library";
+import { Button, Typography } from "../../libraries/gotmyspot-ui-library";
 import Navbar from "./Navbar";
 import RevenueChart from "./RevenueChart";
 import ReservationsSection from "../sections/ReservationsSection";

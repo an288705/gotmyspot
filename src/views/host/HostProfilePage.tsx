@@ -1,7 +1,4 @@
-import {
-  Button,
-  Typography,
-} from "../../libraries/gotmyspot-ui-library";
+import { Button, Typography } from "../../libraries/gotmyspot-ui-library";
 
 export default function HostProfilePage() {
   return (

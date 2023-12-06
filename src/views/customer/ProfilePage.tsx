@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  Button,
-  Typography,
-} from "../../libraries/gotmyspot-ui-library";
+import { Button, Typography } from "../../libraries/gotmyspot-ui-library";
 import { CustomerContext } from "../../controllers/contexts";
 
 export default function ProfilePage() {

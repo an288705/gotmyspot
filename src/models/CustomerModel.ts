@@ -7,8 +7,6 @@ export class CustomerModel {
   public phone: string;
   public paymentInfo: string;
   public reservations: Array<Reservation>;
-  public accountConfirmed: boolean;
-  public signedIn: boolean;
 
   constructor() {
     this.customerId = "";
@@ -17,18 +15,15 @@ export class CustomerModel {
     this.phone = "";
     this.paymentInfo = "";
     this.reservations = [];
-    this.accountConfirmed = false;
-    this.signedIn = false;
   }
 
-  signIn = (
+  setCustomer = (
     customerId: string,
     name: string,
     email: string,
     phone: string,
     paymentInfo: string,
     reservations: Array<Reservation>,
-    accountConfirmed: boolean,
   ) => {
     this.customerId = customerId;
     this.name = name;
@@ -36,18 +31,14 @@ export class CustomerModel {
     this.phone = phone;
     this.paymentInfo = paymentInfo;
     this.reservations = reservations;
-    this.accountConfirmed = accountConfirmed;
-    this.signedIn = true;
   };
 
-  signOut = () => {
+  clearCustomer = () => {
     this.customerId = "";
     this.name = "";
     this.email = "";
     this.phone = "";
     this.paymentInfo = "";
     this.reservations = [];
-    this.accountConfirmed = false;
-    this.signedIn = false;
   };
 }

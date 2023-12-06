@@ -15,16 +15,14 @@ import {
   createTheme,
   ThemeProvider,
 } from "../../libraries/gotmyspot-ui-library";
-import { CustomerContext } from "../../controllers/contexts";
 import { useNavigate } from "react-router-dom";
-import { handleSignInCustomer } from "../../controllers/apis";
+import { handleAuthSignIn } from "../../controllers/apis";
 import CopyrightSection from "../sections/CopyrightSection";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const customer = React.useContext(CustomerContext);
   const navigate = useNavigate();
 
   return (
@@ -47,9 +45,7 @@ export default function SignIn() {
           </Typography>
           <Box
             component="form"
-            onSubmit={(event) =>
-              handleSignInCustomer(customer, event, navigate)
-            }
+            onSubmit={(event) => handleAuthSignIn(event, navigate)}
             noValidate
             sx={{ mt: 1 }}
           >

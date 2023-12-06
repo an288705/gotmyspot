@@ -15,13 +15,11 @@ import {
 } from "../../libraries/gotmyspot-ui-library";
 import { CustomerContext } from "../../controllers/contexts";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../../libraries/supabase";
 
 const pages = [{ text: "Reservations", href: "/reservations" }];
 
-export default function Navbar() {
-  const [settings, setSettings] = React.useState<
-    { text: string; href: string }[]
-  >([{ text: "Sign In", href: "/sign-in" }]);
+export default function Navbar(props: { settings: any }) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
   );
@@ -30,21 +28,6 @@ export default function Navbar() {
   );
   const customer = React.useContext(CustomerContext);
   const navigate = useNavigate();
-
-  React.useEffect(() => {
-    if (customer.signedIn) {
-      if (customer.accountConfirmed) {
-        setSettings([
-          { text: "Profile", href: "/profile" },
-          { text: "Logout", href: "/" },
-        ]);
-      } else {
-        alert("Please confirm email to create account");
-      }
-    } else {
-      setSettings([{ text: "Sign In", href: "/sign-in" }]);
-    }
-  }, [customer.signedIn]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -66,9 +49,10 @@ export default function Navbar() {
     setAnchorElUser(null);
   }
 
-  function handleClickMenuItem(href: string) {
+  async function handleClickMenuItem(href: string) {
     if (href === "/") {
-      customer.signOut();
+      await supabase.auth.signOut();
+      customer.clearCustomer();
     }
 
     navigate(href);
@@ -189,7 +173,7 @@ export default function Navbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {props.settings.map((setting: any) => (
                 <MenuItem
                   key={setting.text}
                   onClick={() => handleClickMenuItem(setting.href)}

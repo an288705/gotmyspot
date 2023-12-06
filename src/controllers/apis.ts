@@ -3,18 +3,13 @@ import { CustomerModel } from "../models/CustomerModel";
 import { HostModel } from "../models/HostModel";
 import { NavigateFunction } from "react-router-dom";
 
-export async function handleSignUpCustomer(
-  customer: CustomerModel,
+export async function handleCustomerAuth(
   event: React.FormEvent<HTMLFormElement>,
-  navigate: NavigateFunction,
 ) {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
-  const name =
-    String(formData.get("firstName")) + " " + String(formData.get("lastName"));
   const email = String(formData.get("email"));
   const password = String(formData.get("password"));
-  const phone = String(formData.get("phone"));
 
   const { data, error } = await supabase.auth.signUp({
     email: email,
@@ -37,31 +32,12 @@ export async function handleSignUpCustomer(
     return;
   }
 
-  /* 
-  customer must confirm email to validate session token for supabase crud. redirect to email confirmation page and
-  if customer is confirmed, then insert to table.
-   */
-
-  //   console.log(data.user.id, name);
-  //   const { error: insertError } = await supabase.from("customerInfo").insert({
-  //     id: data.user.id,
-  //     name: name,
-  //     paymentInfo: "",
-  //     reservations: [],
-  //     isConfirmed: false,
-  //   });
-
-  //   if (insertError) {
-  //     alert("Error during account creation");
-  //     console.log(insertError);
-  //     return;
-  //   }
-
-  //   customer.signIn(data.user.id, name, email, phone, "", [], false);
-  //   navigate("/", { replace: true });
+  alert(
+    "A confirmation link was sent to your email. Click it to verify sign up",
+  );
 }
 
-export async function handleSignUpHost(
+export async function handleHostAuth(
   event: React.FormEvent<HTMLFormElement>,
   spotFormCount: Array<number>,
 ) {
@@ -145,8 +121,7 @@ export async function handleSignUpHost(
   //   }
 }
 
-export async function handleSignInCustomer(
-  customer: CustomerModel,
+export async function handleAuthSignIn(
   event: React.FormEvent<HTMLFormElement>,
   navigate: NavigateFunction,
 ) {
@@ -174,27 +149,51 @@ export async function handleSignInCustomer(
     return;
   }
 
-  const { data, error } = await supabase
-    .from("customerInfo")
-    .select()
-    .eq("id", authData.user.id);
+  navigate("/", { replace: true });
+}
 
-  if (!data) {
-    alert("Info request error");
-    console.log(error);
-    return;
+export async function setCustomerState(customer: CustomerModel) {
+  const { data: sessionData, error: sessionError } =
+    await supabase.auth.getSession();
+
+  if (sessionData.session) {
+    const { data, error } = await supabase
+      .from("customerInfo")
+      .upsert(
+        {
+          authId: sessionData.session.user.id,
+        },
+        { onConflict: "authId" },
+      )
+      .select();
+
+    if (!data) {
+      alert("Info request error");
+      console.log(error);
+      return {
+        settings: [{ text: "Sign In", href: "/sign-in" }],
+      };
+    }
+
+    customer.setCustomer(
+      data[0].id,
+      data[0].name,
+      sessionData.session.user.email || "",
+      sessionData.session.user.phone || "",
+      data[0].paymentInfo,
+      data[0].reservations,
+    );
+    return {
+      settings: [
+        { text: "Profile", href: "/profile" },
+        { text: "Logout", href: "/" },
+      ],
+    };
   }
 
-  customer.signIn(
-    authData.user.id,
-    data[0].name,
-    authData.user.email,
-    authData.user.phone || "",
-    data[0].paymentInfo,
-    data[0].reservations,
-    data[0].isConfirmed,
-  );
-  navigate("/", { replace: true });
+  return {
+    settings: [{ text: "Sign In", href: "/sign-in" }],
+  };
 }
 
 export async function handleSignInHost(
@@ -237,7 +236,7 @@ export async function handleSignInHost(
     return;
   }
 
-  host.signIn(
+  host.setHost(
     authData.user.id,
     data[0].companyName,
     data[0].name,
@@ -245,7 +244,6 @@ export async function handleSignInHost(
     authData.user.phone || "",
     data[0].paymentInfo,
     [],
-    data[0].accountConfirmed,
   );
 
   navigate("/host", { replace: true });
