@@ -17,6 +17,10 @@ export class CustomerModel {
     this.reservations = [];
   }
 
+  setEmail = (email: string) => {
+    this.email = email;
+  };
+
   setCustomer = (
     customerId: string,
     name: string,

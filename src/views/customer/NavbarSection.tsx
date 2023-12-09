@@ -17,9 +17,12 @@ import { CustomerContext } from "../../controllers/contexts";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../libraries/supabase";
 
-const pages = [{ text: "Reservations", href: "/reservations" }];
+const pages = [
+  { text: "Home", href: "/" },
+  { text: "Reservations", href: "/reservations" },
+];
 
-export default function Navbar(props: { settings: any }) {
+export default function NavbarSection(props: { settings: any }) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
   );

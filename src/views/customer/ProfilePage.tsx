@@ -1,11 +1,22 @@
 import React from "react";
-import { Button, Typography } from "../../libraries/gotmyspot-ui-library";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+} from "../../libraries/gotmyspot-ui-library";
 import { CustomerContext } from "../../controllers/contexts";
+import { handleUpdateCustomer } from "../../controllers/apis";
 
 export default function ProfilePage() {
   const customer = React.useContext(CustomerContext);
   return (
-    <div>
+    <Box
+      component="form"
+      noValidate
+      onSubmit={(event) => handleUpdateCustomer(customer, event)}
+    >
+      {customer.name == "" && <Typography>please finish sign in</Typography>}
       <Typography>
         My Account
         <Button>Edit</Button>
@@ -14,8 +25,26 @@ export default function ProfilePage() {
       <Typography>{customer.email}</Typography>
       <Typography>Password</Typography>
       <Typography>example@example</Typography>
+      <Typography>Name</Typography>
+      <TextField
+        required
+        fullWidth
+        id="name"
+        label="name"
+        name="name"
+        autoComplete="name"
+      />
       <Typography>Payment</Typography>
-      <Typography>****0000</Typography>
-    </div>
+      <TextField
+        fullWidth
+        id="paymentInfo"
+        label="payment info"
+        name="paymentInfo"
+        autoComplete="paymentInfo"
+      />
+      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+        Update Profile
+      </Button>
+    </Box>
   );
 }

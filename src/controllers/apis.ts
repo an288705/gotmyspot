@@ -152,26 +152,83 @@ export async function handleAuthSignIn(
   navigate("/", { replace: true });
 }
 
-export async function setCustomerState(customer: CustomerModel) {
+export async function handleUpdateCustomer(
+  customer: CustomerModel,
+  event: React.FormEvent<HTMLFormElement>,
+) {
+  event.preventDefault();
+  const formData = new FormData(event.currentTarget);
+  const name = String(formData.get("name"));
+  const paymentInfo = String(formData.get("paymentInfo"));
+  const { data: sessionData, error: sessionError } =
+    await supabase.auth.getSession();
+
+  if (sessionData.session) {
+    const rowData = customer.customerId
+      ? {
+          id: customer.customerId,
+          authId: sessionData.session.user.id,
+          name: name,
+        }
+      : {
+          authId: sessionData.session.user.id,
+          name: name,
+        };
+    const { data, error } = await supabase
+      .from("customerInfo")
+      .upsert(rowData)
+      .select();
+
+    console.log(data);
+
+    if (error) {
+      alert("Error during account creation");
+      console.log(error);
+      return;
+    }
+
+    if (data) {
+      customer.setCustomer(
+        data[0].id,
+        data[0].name,
+        sessionData.session.user.email || "",
+        sessionData.session.user.phone || "",
+        data[0].paymentInfo,
+        data[0].reservations,
+      );
+    }
+  }
+}
+
+export async function setCustomerState(
+  customer: CustomerModel,
+  navigate: NavigateFunction,
+) {
   const { data: sessionData, error: sessionError } =
     await supabase.auth.getSession();
 
   if (sessionData.session) {
     const { data, error } = await supabase
       .from("customerInfo")
-      .upsert(
-        {
-          authId: sessionData.session.user.id,
-        },
-        { onConflict: "authId" },
-      )
-      .select();
+      .select()
+      .eq("authId", sessionData.session.user.id);
 
-    if (!data) {
+    if (error) {
       alert("Info request error");
       console.log(error);
       return {
         settings: [{ text: "Sign In", href: "/sign-in" }],
+      };
+    }
+
+    if (data.length == 0) {
+      customer.setEmail(sessionData.session.user.email || "");
+      navigate("/profile");
+      return {
+        settings: [
+          { text: "Profile", href: "/profile" },
+          { text: "Logout", href: "/" },
+        ],
       };
     }
 
