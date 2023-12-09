@@ -7,6 +7,7 @@ export class CustomerModel {
   public phone: string;
   public paymentInfo: string;
   public reservations: Array<Reservation>;
+  public isCustomerSet: boolean;
 
   constructor() {
     this.customerId = "";
@@ -15,6 +16,7 @@ export class CustomerModel {
     this.phone = "";
     this.paymentInfo = "";
     this.reservations = [];
+    this.isCustomerSet = false;
   }
 
   setEmail = (email: string) => {
@@ -35,6 +37,7 @@ export class CustomerModel {
     this.phone = phone;
     this.paymentInfo = paymentInfo;
     this.reservations = reservations;
+    this.isCustomerSet = true;
   };
 
   clearCustomer = () => {
@@ -44,5 +47,6 @@ export class CustomerModel {
     this.phone = "";
     this.paymentInfo = "";
     this.reservations = [];
+    this.isCustomerSet = false;
   };
 }

@@ -1,50 +1,26 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-} from "../../libraries/gotmyspot-ui-library";
+import { Button, Typography } from "../../libraries/gotmyspot-ui-library";
 import { CustomerContext } from "../../controllers/contexts";
-import { handleUpdateCustomer } from "../../controllers/apis";
+import ProfileEdit from "./ProfileEdit";
+import ProfileView from "./ProfileView";
 
 export default function ProfilePage() {
   const customer = React.useContext(CustomerContext);
+  const [isEditing, setIsEditing] = React.useState(!customer.isCustomerSet);
   return (
-    <Box
-      component="form"
-      noValidate
-      onSubmit={(event) => handleUpdateCustomer(customer, event)}
-    >
-      {customer.name == "" && <Typography>please finish sign in</Typography>}
+    <>
+      {!customer.isCustomerSet && (
+        <Typography>please finish sign in</Typography>
+      )}
       <Typography>
         My Account
-        <Button>Edit</Button>
+        <Button onClick={() => setIsEditing(true)}>Edit</Button>
       </Typography>
-      <Typography>Email</Typography>
-      <Typography>{customer.email}</Typography>
-      <Typography>Password</Typography>
-      <Typography>example@example</Typography>
-      <Typography>Name</Typography>
-      <TextField
-        required
-        fullWidth
-        id="name"
-        label="name"
-        name="name"
-        autoComplete="name"
-      />
-      <Typography>Payment</Typography>
-      <TextField
-        fullWidth
-        id="paymentInfo"
-        label="payment info"
-        name="paymentInfo"
-        autoComplete="paymentInfo"
-      />
-      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-        Update Profile
-      </Button>
-    </Box>
+      {isEditing ? (
+        <ProfileEdit setIsEditing={setIsEditing} />
+      ) : (
+        <ProfileView />
+      )}
+    </>
   );
 }
