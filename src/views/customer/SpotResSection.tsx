@@ -1,3 +1,4 @@
+import React from "react";
 import {
   LocalizationProvider,
   Button,
@@ -9,9 +10,19 @@ import {
 } from "../../libraries/gotmyspot-ui-library";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import SpotsSection from "../sections/SpotsSection";
+import { getSpots } from "../../controllers/apis";
 
 export default function SpotResSection() {
-  const res = ["ex 1", "ex 2", "ex 3"];
+  const [spots, setSpots] = React.useState(Array<any>);
+
+  async function setSpotsState() {
+    const res = await getSpots();
+    setSpots(res);
+  }
+
+  React.useEffect(() => {
+    setSpotsState();
+  }, []);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       Location
@@ -44,7 +55,7 @@ export default function SpotResSection() {
           </Button>
         </Grid>
       </Grid>
-      <SpotsSection spots={res} />
+      <SpotsSection spots={spots} />
     </LocalizationProvider>
   );
 }

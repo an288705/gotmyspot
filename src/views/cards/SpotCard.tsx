@@ -1,9 +1,12 @@
-import { Card } from "../../libraries/gotmyspot-ui-library";
+import { Card, Link } from "../../libraries/gotmyspot-ui-library";
 
-export default function SpotCard(props: { spotInfo: string }) {
+export default function SpotCard(props: {
+  spot: { spotInfo: string; paymentLink: any };
+}) {
   return (
     <Card>
-      <div>{props.spotInfo}</div>
+      <div>{props.spot.spotInfo}</div>
+      <Link href={props.spot.paymentLink}></Link>
     </Card>
   );
 }

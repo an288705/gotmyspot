@@ -1,10 +1,12 @@
 import SpotCard from "../cards/SpotCard";
 
-export default function SpotsSection(props: { spots: Array<any> }) {
+export default function SpotsSection(props: {
+  spots: Array<{ spotInfo: string; paymentLink: any }>;
+}) {
   return (
     <div>
-      {props.spots.map((spotInfo) => (
-        <SpotCard spotInfo={spotInfo} />
+      {props.spots.map((spot) => (
+        <SpotCard spot={spot} />
       ))}
     </div>
   );

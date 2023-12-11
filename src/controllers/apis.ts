@@ -1,4 +1,5 @@
 import { supabase } from "../libraries/supabase";
+import { stripe } from "../libraries/stripe";
 import { CustomerModel } from "../models/CustomerModel";
 import { HostModel } from "../models/HostModel";
 import { NavigateFunction } from "react-router-dom";
@@ -304,4 +305,35 @@ export async function handleSignInHost(
   );
 
   navigate("/host", { replace: true });
+}
+
+export async function getSpots() {
+  const spots = await Promise.all([
+    {
+      spotInfo: "ex 1",
+      paymentLink: stripe.paymentLinks.create({
+        line_items: [
+          {
+            price: "20",
+            quantity: 1,
+          },
+        ],
+      }),
+    },
+    {
+      spotInfo: "ex 2",
+      paymentLink: stripe.paymentLinks.create({
+        line_items: [
+          {
+            price: "20",
+            quantity: 1,
+          },
+        ],
+      }),
+    },
+  ]);
+
+  console.log(spots);
+
+  return spots;
 }
