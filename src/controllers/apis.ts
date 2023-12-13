@@ -308,13 +308,24 @@ export async function handleSignInHost(
 }
 
 export async function getSpots() {
+  const price = await stripe.prices.create({
+    currency: "usd",
+    unit_amount: 1000,
+    recurring: {
+      interval: "month",
+    },
+    product_data: {
+      name: "Gold Plan",
+    },
+  });
+
   const spots = await Promise.all([
     {
       spotInfo: "ex 1",
-      paymentLink: stripe.paymentLinks.create({
+      paymentLink: await stripe.paymentLinks.create({
         line_items: [
           {
-            price: "20",
+            price: price.id,
             quantity: 1,
           },
         ],
@@ -322,10 +333,10 @@ export async function getSpots() {
     },
     {
       spotInfo: "ex 2",
-      paymentLink: stripe.paymentLinks.create({
+      paymentLink: await stripe.paymentLinks.create({
         line_items: [
           {
-            price: "20",
+            price: price.id,
             quantity: 1,
           },
         ],

@@ -6,7 +6,7 @@ export default function SpotCard(props: {
   return (
     <Card>
       <div>{props.spot.spotInfo}</div>
-      <Link href={props.spot.paymentLink}></Link>
+      <Link href={props.spot.paymentLink.url}>Reserve</Link>
     </Card>
   );
 }
