@@ -8,6 +8,7 @@ export class HostModel {
   public phone: string;
   public paymentInfo: string;
   public spots: Array<Spot>;
+  public isHostSet: boolean;
 
   constructor() {
     this.hostId = "";
@@ -17,6 +18,7 @@ export class HostModel {
     this.phone = "";
     this.paymentInfo = "";
     this.spots = [];
+    this.isHostSet = false;
   }
 
   setHost = (
@@ -35,6 +37,7 @@ export class HostModel {
     this.phone = phone;
     this.paymentInfo = paymentInfo;
     this.spots = spots;
+    this.isHostSet = true;
   };
 
   clearHost = () => {
@@ -45,5 +48,6 @@ export class HostModel {
     this.phone = "";
     this.paymentInfo = "";
     this.spots = [];
+    this.isHostSet = false;
   };
 }

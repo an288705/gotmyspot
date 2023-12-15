@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "../../libraries/gotmyspot-ui-library";
 import ReservationsSection from "../sections/ReservationsSection";
-import SpotsSection from "../sections/SpotsSection";
+import ReserveSpotsSection from "../sections/ReserveSpotsSection";
 import { getSpots } from "../../controllers/apis";
 
 export default function ReservationsPage() {
@@ -22,7 +22,7 @@ export default function ReservationsPage() {
       </Typography>
       <ReservationsSection reservations={reservations} />
       <Typography sx={{ textDecoration: "underline" }}>Saved spots</Typography>
-      <SpotsSection spots={reservations} />
+      <ReserveSpotsSection spots={reservations} />
     </div>
   );
 }

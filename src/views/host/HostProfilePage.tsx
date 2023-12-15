@@ -1,18 +1,24 @@
+import React from "react";
 import { Button, Typography } from "../../libraries/gotmyspot-ui-library";
+import { HostContext } from "../../controllers/contexts";
+import HostProfileEdit from "./HostProfileEdit";
+import HostProfileView from "./HostProfileView";
 
-export default function HostProfilePage() {
+export default function ProfilePage() {
+  const host = React.useContext(HostContext);
+  const [isEditing, setIsEditing] = React.useState(!host.isHostSet);
   return (
-    <div>
+    <>
+      {!host.isHostSet && <Typography>please finish sign in</Typography>}
       <Typography>
         My Account
-        <Button>Edit</Button>
+        <Button onClick={() => setIsEditing(true)}>Edit</Button>
       </Typography>
-      <Typography>Email</Typography>
-      <Typography>example@example</Typography>
-      <Typography>Password</Typography>
-      <Typography>example@example</Typography>
-      <Typography>Payment</Typography>
-      <Typography>****0000</Typography>
-    </div>
+      {isEditing ? (
+        <HostProfileEdit setIsEditing={setIsEditing} />
+      ) : (
+        <HostProfileView />
+      )}
+    </>
   );
 }

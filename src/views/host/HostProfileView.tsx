@@ -1,9 +1,14 @@
 import React from "react";
-import { Box, Typography } from "../../libraries/gotmyspot-ui-library";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+} from "../../libraries/gotmyspot-ui-library";
 import { CustomerContext } from "../../controllers/contexts";
 import { handleUpdateCustomer } from "../../controllers/apis";
 
-export default function ProfileView() {
+export default function HostProfileView() {
   const customer = React.useContext(CustomerContext);
   return (
     <Box

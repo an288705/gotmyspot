@@ -5,8 +5,8 @@ export default function ReservationsSection(props: {
 }) {
   return (
     <div>
-      {props.reservations.map((reservationCardInfo) => (
-        <ReservationCard reservationCardInfo={reservationCardInfo} />
+      {props.reservations.map((reservation) => (
+        <ReservationCard reservation={reservation} />
       ))}
     </div>
   );

@@ -9,7 +9,7 @@ import {
   TimePicker,
 } from "../../libraries/gotmyspot-ui-library";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import SpotsSection from "../sections/SpotsSection";
+import ReserveSpotsSection from "../sections/ReserveSpotsSection";
 import { getSpots } from "../../controllers/apis";
 
 export default function SpotResSection() {
@@ -55,7 +55,7 @@ export default function SpotResSection() {
           </Button>
         </Grid>
       </Grid>
-      <SpotsSection spots={spots} />
+      <ReserveSpotsSection spots={spots} />
     </LocalizationProvider>
   );
 }

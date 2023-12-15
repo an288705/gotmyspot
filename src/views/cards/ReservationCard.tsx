@@ -1,11 +1,11 @@
 import { Card } from "../../libraries/gotmyspot-ui-library";
 
 export default function ReservationCard(props: {
-  reservationCardInfo: string;
+  reservation: { spotInfo: string; paymentLink: any };
 }) {
   return (
     <Card>
-      <div>{props.reservationCardInfo}</div>
+      <div>{props.reservation.spotInfo}</div>
     </Card>
   );
 }
