@@ -5,24 +5,24 @@ import {
   TextField,
   Typography,
 } from "../../libraries/gotmyspot-ui-library";
-import { CustomerContext } from "../../controllers/contexts";
-import { handleUpdateCustomer } from "../../controllers/apis";
+import { HostContext } from "../../controllers/contexts";
+import { handleUpdateHost } from "../../controllers/apis";
 
 export default function HostProfileEdit(props: {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const customer = React.useContext(CustomerContext);
+  const host = React.useContext(HostContext);
   return (
     <Box
       component="form"
       noValidate
       onSubmit={(event) => {
-        handleUpdateCustomer(customer, event);
+        handleUpdateHost(host, event);
         props.setIsEditing(false);
       }}
     >
       <Typography>Email</Typography>
-      <Typography>{customer.email}</Typography>
+      <Typography>{host.email}</Typography>
       <Typography>Password</Typography>
       <Typography>example@example</Typography>
       <Typography>Name</Typography>

@@ -14,12 +14,7 @@ import {
 } from "../../libraries/gotmyspot-ui-library";
 import { useNavigate } from "react-router-dom";
 
-const settings = [
-  { text: "Profile", href: "/host/profile" },
-  { text: "Logout", href: "/host/logout" },
-];
-
-export default function Navbar() {
+export default function NavbarSection(props: { settings: any }) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null,
@@ -144,7 +139,7 @@ export default function Navbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {props.settings.map((setting: any) => (
                 <MenuItem
                   key={setting.text}
                   onClick={() => handleClickMenuItem(setting.href)}

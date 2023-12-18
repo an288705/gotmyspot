@@ -201,6 +201,55 @@ export async function handleUpdateCustomer(
   }
 }
 
+export async function handleUpdateHost(
+  host: HostModel,
+  event: React.FormEvent<HTMLFormElement>,
+) {
+  event.preventDefault();
+  const formData = new FormData(event.currentTarget);
+  const name = String(formData.get("name"));
+  const paymentInfo = String(formData.get("paymentInfo"));
+  const { data: sessionData, error: sessionError } =
+    await supabase.auth.getSession();
+
+  if (sessionData.session) {
+    const rowData = host.hostId
+      ? {
+          id: host.hostId,
+          authId: sessionData.session.user.id,
+          name: name,
+        }
+      : {
+          authId: sessionData.session.user.id,
+          name: name,
+        };
+    const { data, error } = await supabase
+      .from("hostInfo")
+      .upsert(rowData)
+      .select();
+
+    console.log(data);
+
+    if (error) {
+      alert("Error during account creation");
+      console.log(error);
+      return;
+    }
+
+    if (data) {
+      host.setHost(
+        data[0].id,
+        data[0].companyName,
+        data[0].name,
+        sessionData.session.user.email || "",
+        sessionData.session.user.phone || "",
+        data[0].paymentInfo,
+        data[0].spots,
+      );
+    }
+  }
+}
+
 export async function setCustomerState(
   customer: CustomerModel,
   navigate: NavigateFunction,
@@ -251,6 +300,55 @@ export async function setCustomerState(
 
   return {
     settings: [{ text: "Sign In", href: "/sign-in" }],
+  };
+}
+
+export async function setHostState(
+  host: HostModel,
+) {
+  const { data: sessionData, error: sessionError } =
+    await supabase.auth.getSession();
+
+  if (sessionData.session) {
+    console.log(sessionData.session);
+    const { data, error } = await supabase
+      .from("hostInfo")
+      .select()
+      .eq("authId", sessionData.session.user.id);
+
+    if (error) {
+      alert("Info request error");
+      console.log(error);
+      return {
+        settings: [{ text: "Sign In", href: "/host-sign-in" }],
+      };
+    }
+
+    if (data.length == 0) {
+      return {
+        settings: [{ text: "Sign In", href: "/host-sign-in" }],
+      };
+    }
+
+    host.setHost(
+      data[0].id,
+      data[0].companyName,
+      data[0].name,
+      sessionData.session.user.email || "",
+      sessionData.session.user.phone || "",
+      data[0].paymentInfo,
+      data[0].spots,
+    );
+    return {
+      settings: [
+        { text: "Profile", href: "/profile" },
+        { text: "Logout", href: "/" },
+      ],
+    };
+  }
+
+  return {
+    settings: [{ text: "Sign In", href: "/host-sign-in" }],
   };
 }
 

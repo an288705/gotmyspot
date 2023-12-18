@@ -1,13 +1,23 @@
 import React from "react";
 import { Button, Typography } from "../../libraries/gotmyspot-ui-library";
-import Navbar from "./Navbar";
+import NavbarSection from "./NavbarSection";
 import RevenueChart from "./RevenueChart";
 import ReservationsSection from "../sections/ReservationsSection";
 import SpotsSection from "../sections/SpotsSection";
-import { getSpots } from "../../controllers/apis";
+import { getSpots, setHostState } from "../../controllers/apis";
+import { HostContext } from "../../controllers/contexts";
 
 export default function HostHome() {
+  const host = React.useContext(HostContext);
   const [reservations, setReservations] = React.useState(Array<any>);
+  const [settings, setSettings] = React.useState<
+    { text: string; href: string }[]
+  >([{ text: "Sign In", href: "/sign-in" }]);
+
+  async function setPageState() {
+    const state = await setHostState(host);
+    setSettings(state!.settings);
+  }
 
   async function setReservationsState() {
     const res = await getSpots();
@@ -15,11 +25,12 @@ export default function HostHome() {
   }
 
   React.useEffect(() => {
+    setPageState();
     setReservationsState();
   }, []);
   return (
     <div>
-      <Navbar />
+      <NavbarSection settings={settings} />
       <Typography sx={{ textDecoration: "underline" }}>Dashboard</Typography>
       <RevenueChart />
       <Button>View report</Button>
