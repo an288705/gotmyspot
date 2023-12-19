@@ -403,7 +403,26 @@ export async function handleSignInHost(
   navigate("/host", { replace: true });
 }
 
-export async function getSpots() {
+export async function getSpotsByLatLong(
+  lat: number,
+  long: number,
+  radius: number,
+) {
+  const { data, error } = await supabase
+    .from("spotInfo")
+    .select()
+    .gte("latitude", lat - radius)
+    .lte("latitude", lat + radius)
+    .gte("longitude", long - radius)
+    .lte("longitude", long + radius);
+
+  if (error) {
+    alert(error);
+    return [];
+  }
+
+  console.log(data);
+
   const price = await stripe.prices.create({
     currency: "usd",
     unit_amount: 1000,
@@ -417,7 +436,7 @@ export async function getSpots() {
 
   const spots = await Promise.all([
     {
-      spotInfo: "ex 1",
+      spotInfo: data[0],
       paymentLink: await stripe.paymentLinks.create({
         line_items: [
           {
@@ -428,7 +447,59 @@ export async function getSpots() {
       }),
     },
     {
-      spotInfo: "ex 2",
+      spotInfo: data[0],
+      paymentLink: await stripe.paymentLinks.create({
+        line_items: [
+          {
+            price: price.id,
+            quantity: 1,
+          },
+        ],
+      }),
+    },
+  ]);
+
+  console.log(spots);
+
+  return spots;
+}
+
+export async function getSpotsByIds(ids: Array<string>) {
+  const { data, error } = await supabase
+    .from("spotInfo")
+    .select()
+    .eq("id", ids[0]);
+
+  if (error) {
+    alert(error);
+    return [];
+  }
+
+  const price = await stripe.prices.create({
+    currency: "usd",
+    unit_amount: 1000,
+    recurring: {
+      interval: "month",
+    },
+    product_data: {
+      name: "Gold Plan",
+    },
+  });
+
+  const spots = await Promise.all([
+    {
+      spotInfo: data[0],
+      paymentLink: await stripe.paymentLinks.create({
+        line_items: [
+          {
+            price: price.id,
+            quantity: 1,
+          },
+        ],
+      }),
+    },
+    {
+      spotInfo: data[0].address,
       paymentLink: await stripe.paymentLinks.create({
         line_items: [
           {

@@ -15,7 +15,6 @@ export default function CustomerHome(props: { page: JSX.Element }) {
     const state = await setCustomerState(customer, navigate);
     setSettings(state!.settings);
   }
-
   React.useEffect(() => {
     setPageState();
   }, []);

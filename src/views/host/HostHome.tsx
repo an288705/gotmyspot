@@ -4,7 +4,7 @@ import NavbarSection from "./NavbarSection";
 import RevenueChart from "./RevenueChart";
 import ReservationsSection from "../sections/ReservationsSection";
 import SpotsSection from "../sections/SpotsSection";
-import { getSpots, setHostState } from "../../controllers/apis";
+import { getSpotsByIds, setHostState } from "../../controllers/apis";
 import { HostContext } from "../../controllers/contexts";
 
 export default function HostHome() {
@@ -20,7 +20,7 @@ export default function HostHome() {
   }
 
   async function setReservationsState() {
-    const res = await getSpots();
+    const res = await getSpotsByIds(["a9fa05c4-f027-4c6a-ad39-356542131e2d"]);
     setReservations(res);
   }
 

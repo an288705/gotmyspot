@@ -1,12 +1,25 @@
+import React from "react";
 import { Grid, Paper } from "../../libraries/gotmyspot-ui-library";
 import Map, { Marker } from "react-map-gl";
 import SpotResSection from "./SpotResSection";
+import { getSpotsByLatLong } from "../../controllers/apis";
 
 export default function HomePage() {
+  const [spots, setSpots] = React.useState(Array<any>);
   const location = {
     lat: 37.42216,
     lng: -122.08427,
   };
+
+  async function setSpotsState() {
+    const res = await getSpotsByLatLong(location.lat, location.lng, 5);
+    setSpots(res);
+    console.log("res", res);
+  }
+
+  React.useEffect(() => {
+    setSpotsState();
+  }, []);
 
   return (
     <Grid container>
@@ -20,24 +33,19 @@ export default function HomePage() {
           }}
           mapStyle="mapbox://styles/mapbox/streets-v11"
         >
-          <Marker
-            latitude={location.lat}
-            longitude={location.lng}
-            onClick={() => {}}
-          >
-            <Paper>$20</Paper>
-          </Marker>
-          <Marker
-            latitude={location.lat + 0.001}
-            longitude={location.lng}
-            onClick={() => {}}
-          >
-            <Paper>$20</Paper>
-          </Marker>
+          {spots.map((spot) => (
+            <Marker
+              latitude={spot.spotInfo.latitude}
+              longitude={spot.spotInfo.longitude}
+              onClick={() => {}}
+            >
+              <Paper>$20</Paper>
+            </Marker>
+          ))}
         </Map>
       </Grid>
       <Grid item>
-        <SpotResSection />
+        <SpotResSection spots={spots} />
       </Grid>
     </Grid>
   );
