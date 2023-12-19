@@ -31,13 +31,15 @@ export default function HostHome() {
   return (
     <div>
       <NavbarSection settings={settings} />
-      <Typography sx={{ textDecoration: "underline" }}>Dashboard</Typography>
-      <RevenueChart />
-      <Button>View report</Button>
-      <Typography sx={{ textDecoration: "underline" }}>Manage spots</Typography>
-      <SpotsSection spots={reservations} />
-      <Typography sx={{ textDecoration: "underline" }}>Reservations</Typography>
-      <ReservationsSection reservations={reservations} />
+      {
+        host.isHostSet ? (<><Typography sx={{ textDecoration: "underline" }}>Dashboard</Typography>
+        <RevenueChart />
+        <Button>View report</Button>
+        <Typography sx={{ textDecoration: "underline" }}>Manage spots</Typography>
+        <SpotsSection spots={reservations} />
+        <Typography sx={{ textDecoration: "underline" }}>Reservations</Typography>
+        <ReservationsSection reservations={reservations} /></>) : (<>Please wait to hear back from our team</>)
+      }
     </div>
   );
 }
