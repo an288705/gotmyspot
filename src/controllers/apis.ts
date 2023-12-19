@@ -303,9 +303,7 @@ export async function setCustomerState(
   };
 }
 
-export async function setHostState(
-  host: HostModel,
-) {
+export async function setHostState(host: HostModel) {
   const { data: sessionData, error: sessionError } =
     await supabase.auth.getSession();
 
