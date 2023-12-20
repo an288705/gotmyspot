@@ -423,95 +423,68 @@ export async function getSpotsByLatLong(
 
   console.log(data);
 
-  const price = await stripe.prices.create({
-    currency: "usd",
-    unit_amount: 1000,
-    recurring: {
-      interval: "month",
-    },
-    product_data: {
-      name: "Gold Plan",
-    },
-  });
-
-  const spots = await Promise.all([
-    {
-      spotInfo: data[0],
-      paymentLink: await stripe.paymentLinks.create({
-        line_items: [
-          {
-            price: price.id,
-            quantity: 1,
-          },
-        ],
-      }),
-    },
-    {
-      spotInfo: data[0],
-      paymentLink: await stripe.paymentLinks.create({
-        line_items: [
-          {
-            price: price.id,
-            quantity: 1,
-          },
-        ],
-      }),
-    },
-  ]);
-
-  console.log(spots);
-
-  return spots;
+  return data;
 }
 
 export async function getSpotsByIds(ids: Array<string>) {
   const { data, error } = await supabase
     .from("spotInfo")
     .select()
-    .eq("id", ids[0]);
+    .in("id", ids);
 
   if (error) {
     alert(error);
     return [];
   }
 
+  console.log(data);
+
+  return data;
+}
+
+export async function getReservationsByIds(ids: Array<string>) {
+  const { data, error } = await supabase
+    .from("reservationInfo")
+    .select()
+    .in("id", ids);
+
+  console.log(data);
+
+  if (error) {
+    alert(error);
+    console.log(error);
+    return [];
+  }
+
+  console.log(data);
+
+  return data;
+}
+
+export async function openPaymentLinkForReservedTime(
+  rates: Array<number>,
+  reservedTime: number,
+  address: string,
+) {
+  // sort rates then search until the time is under.
+  // that will be your cost
+  const cost = 1000;
   const price = await stripe.prices.create({
     currency: "usd",
-    unit_amount: 1000,
-    recurring: {
-      interval: "month",
-    },
+    unit_amount: cost,
     product_data: {
-      name: "Gold Plan",
+      name: address,
     },
   });
 
-  const spots = await Promise.all([
-    {
-      spotInfo: data[0],
-      paymentLink: await stripe.paymentLinks.create({
-        line_items: [
-          {
-            price: price.id,
-            quantity: 1,
-          },
-        ],
-      }),
-    },
-    {
-      spotInfo: data[0].address,
-      paymentLink: await stripe.paymentLinks.create({
-        line_items: [
-          {
-            price: price.id,
-            quantity: 1,
-          },
-        ],
-      }),
-    },
-  ]);
+  const paymentLink = await stripe.paymentLinks.create({
+    line_items: [
+      {
+        price: price.id,
+        quantity: 1,
+      },
+    ],
+  });
 
-  console.log(spots);
-
-  return spots;
+  window.location.href = paymentLink.url;
 }

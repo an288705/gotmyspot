@@ -1,10 +1,10 @@
-import SpotCard from "../cards/SpotCard";
+import SpotInfoCard from "../cards/SpotInfoCard";
 
 export default function SpotsSection(props: { spots: Array<any> }) {
   return (
     <div>
       {props.spots.map((spot) => (
-        <SpotCard spot={spot} />
+        <SpotInfoCard spot={spot} />
       ))}
     </div>
   );

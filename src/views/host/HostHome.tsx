@@ -31,7 +31,7 @@ export default function HostHome() {
   return (
     <div>
       <NavbarSection settings={settings} />
-      {host.isHostSet ? (
+      {host.isHostSet || true ? (
         <>
           <Typography sx={{ textDecoration: "underline" }}>
             Dashboard

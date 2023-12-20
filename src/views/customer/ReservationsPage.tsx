@@ -1,15 +1,18 @@
 import React from "react";
 import { Typography } from "../../libraries/gotmyspot-ui-library";
 import ReservationsSection from "../sections/ReservationsSection";
-import ReserveSpotsSection from "../sections/ReserveSpotsSection";
-import { getSpotsByIds } from "../../controllers/apis";
+import SpotsReserveSection from "../sections/SpotsReserveSection";
+import { getReservationsByIds } from "../../controllers/apis";
 
 export default function ReservationsPage() {
   const [reservations, setReservations] = React.useState(Array<any>);
 
   async function setReservationsState() {
-    const res = await getSpotsByIds(["a9fa05c4-f027-4c6a-ad39-356542131e2d"]);
+    const res = await getReservationsByIds([
+      "466c8032-ebce-467c-9cc1-5258493f2022",
+    ]);
     setReservations(res);
+    console.log("res", res);
   }
 
   React.useEffect(() => {
@@ -22,7 +25,7 @@ export default function ReservationsPage() {
       </Typography>
       <ReservationsSection reservations={reservations} />
       <Typography sx={{ textDecoration: "underline" }}>Saved spots</Typography>
-      <ReserveSpotsSection spots={reservations} />
+      <SpotsReserveSection spots={reservations} />
     </div>
   );
 }

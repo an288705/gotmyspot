@@ -35,8 +35,8 @@ export default function HomePage() {
         >
           {spots.map((spot) => (
             <Marker
-              latitude={spot.spotInfo.latitude}
-              longitude={spot.spotInfo.longitude}
+              latitude={spot.latitude}
+              longitude={spot.longitude}
               onClick={() => {}}
             >
               <Paper>$20</Paper>
