@@ -21,7 +21,10 @@ export default function RoutesProvider() {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/host-sign-in" element={<HostSignIn />} />
         <Route path="/host-sign-up" element={<HostSignUp />} />
-        <Route path="/reservations" element={<ReservationsPage />} />
+        <Route
+          path="/reservations"
+          element={<CustomerHome page={<ReservationsPage />} />}
+        />
         <Route
           path="/profile"
           element={<CustomerHome page={<ProfilePage />} />}
