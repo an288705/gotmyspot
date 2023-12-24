@@ -1,11 +1,16 @@
 import React from "react";
 import { Grid, Paper } from "../../libraries/gotmyspot-ui-library";
-import Map, { Marker, useMap } from "react-map-gl";
-import SpotResSection from "./SpotResSection";
+import Map, { Marker } from "react-map-gl";
+import SpotsReserveSection from "../sections/SpotsReserveSection";
+import SpotSearchSection from "./SpotSearchSection";
 import { getSpotsByLatLong } from "../../controllers/apis";
 
 export default function HomePage() {
+  /* MAP COMPONENT NEEDS TO CHANGE TO UPDATE CENTER ON SEARCH */
   const [spots, setSpots] = React.useState(Array<any>);
+  const [rawLocation, setRawLocation] = React.useState<string>(
+    "1600 Amphitheatre Parkway Mountain View CA 94043",
+  );
   const [location, setLocation] = React.useState<{
     lat: number;
     lng: number;
@@ -15,7 +20,26 @@ export default function HomePage() {
   });
 
   async function setSpotsState() {
-    const res = await getSpotsByLatLong(location.lat, location.lng, 0.01);
+    const address = encodeURIComponent(rawLocation);
+    console.log(address);
+    const geocoding = await fetch(
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`,
+    ).then((data) => data.json());
+    console.log("geo res: ", geocoding);
+    console.log(
+      "lat long: ",
+      geocoding.features[0].center[1],
+      geocoding.features[0].center[0],
+    );
+    setLocation({
+      lat: geocoding.features[0].center[1],
+      lng: geocoding.features[0].center[0],
+    });
+    const res = await getSpotsByLatLong(
+      geocoding.features[0].center[1],
+      geocoding.features[0].center[0],
+      0.01,
+    );
     setSpots(res);
     console.log("res", res);
   }
@@ -25,8 +49,9 @@ export default function HomePage() {
   }
 
   React.useEffect(() => {
+    console.log("curr raw:", rawLocation);
     setSpotsState();
-  }, [location]);
+  }, [rawLocation]);
 
   return (
     <Grid container>
@@ -54,7 +79,8 @@ export default function HomePage() {
         </Map>
       </Grid>
       <Grid item>
-        <SpotResSection spots={spots} />
+        <SpotSearchSection setRawLocation={setRawLocation} />
+        <SpotsReserveSection spots={spots} />
       </Grid>
     </Grid>
   );
