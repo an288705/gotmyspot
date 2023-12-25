@@ -521,5 +521,15 @@ export async function openPaymentLinkForReservedTime(
     ],
   });
 
-  window.open(paymentLink.url, '_blank');
+  window.open(paymentLink.url, "_blank");
+  // Make an endpoint that stripe will call
+  // after an event. The endpoint will update
+  // userInfo in database and add the spotId
+  // to spot id array
+}
+
+export function handleCancelReservation(spotId: string) {
+  if (window.confirm("Are you sure you want to cancel this reservation?")) {
+    alert("Cancelled reservation");
+  }
 }
