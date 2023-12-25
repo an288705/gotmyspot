@@ -426,6 +426,41 @@ export async function getSpotsByLatLong(
   return data;
 }
 
+export async function handleSpotSearch(
+  event: React.FormEvent<HTMLFormElement>,
+  setViewState: React.Dispatch<
+    React.SetStateAction<{
+      longitude: number;
+      latitude: number;
+      zoom: number;
+    }>
+  >,
+) {
+  event.preventDefault();
+  console.log("e val", event);
+  const formData = new FormData(event.currentTarget);
+  console.log("location search val", formData.get("location"));
+
+  const rawLocation = String(formData.get("location"));
+  const address = encodeURIComponent(rawLocation);
+  console.log(address);
+  const geocoding = await fetch(
+    `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`,
+  ).then((data) => data.json());
+  console.log("geo res: ", geocoding);
+  console.log(
+    "lat long: ",
+    geocoding.features[0].center[1],
+    geocoding.features[0].center[0],
+  );
+
+  setViewState({
+    longitude: geocoding.features[0].center[0],
+    latitude: geocoding.features[0].center[1],
+    zoom: 15,
+  });
+}
+
 export async function getSpotsByIds(ids: Array<string>) {
   const { data, error } = await supabase
     .from("spotInfo")

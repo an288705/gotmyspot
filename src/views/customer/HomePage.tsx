@@ -24,14 +24,6 @@ export default function HomePage() {
     setSpots(res);
   }
 
-  function handleCenterMove(e: any) {
-    setViewState({
-      longitude: e.viewState.longitude,
-      latitude: e.viewState.latitude,
-      zoom: 15,
-    });
-  }
-
   React.useEffect(() => {
     setSpotsState();
   }, [viewState]);
@@ -43,7 +35,11 @@ export default function HomePage() {
           {...viewState}
           id="mapData"
           mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-          onMove={handleCenterMove}
+          onMove={(e)=>setViewState({
+            longitude: e.viewState.longitude,
+            latitude: e.viewState.latitude,
+            zoom: 15,
+          })}
           mapStyle="mapbox://styles/mapbox/streets-v11"
         >
           {spots.map((spot) => (
