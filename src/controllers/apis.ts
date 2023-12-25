@@ -521,5 +521,5 @@ export async function openPaymentLinkForReservedTime(
     ],
   });
 
-  window.location.href = paymentLink.url;
+  window.open(paymentLink.url, '_blank');
 }
