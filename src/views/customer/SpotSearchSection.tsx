@@ -10,14 +10,31 @@ import {
 } from "../../libraries/gotmyspot-ui-library";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-export default function SpotSearchSection(props: { setRawLocation: any }) {
-  function handleSpotSearch(e: any) {
+export default function SpotSearchSection(props: { setViewState: any }) {
+  async function handleSpotSearch(e: any) {
     e.preventDefault();
     console.log("e val", e);
     const formData = new FormData(e.currentTarget);
     console.log("location search val", formData.get("location"));
 
-    props.setRawLocation(formData.get("location"));
+    const rawLocation = String(formData.get("location"));
+    const address = encodeURIComponent(rawLocation);
+    console.log(address);
+    const geocoding = await fetch(
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`,
+    ).then((data) => data.json());
+    console.log("geo res: ", geocoding);
+    console.log(
+      "lat long: ",
+      geocoding.features[0].center[1],
+      geocoding.features[0].center[0],
+    );
+
+    props.setViewState({
+      longitude: geocoding.features[0].center[0],
+      latitude: geocoding.features[0].center[1],
+      zoom: 15,
+    });
   }
 
   return (
