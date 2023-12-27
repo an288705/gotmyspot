@@ -2,18 +2,22 @@ import React from "react";
 import { Grid, Paper } from "../../libraries/gotmyspot-ui-library";
 import Map, { Marker } from "react-map-gl";
 import SpotsReserveSection from "../sections/SpotsReserveSection";
-import SpotSearchSection from "./SpotSearchSection";
+import SpotSearchSection from "../sections/SpotSearchSection";
 import { getSpotsByLatLong } from "../../controllers/apis";
 
 export default function HomePage() {
   const [spots, setSpots] = React.useState(Array<any>);
   const [viewState, setViewState] = React.useState<any>();
+  const [startDate, setStartDate] = React.useState<Date>(new Date());
+  const [endDate, setEndDate] = React.useState<Date>(new Date());
 
   async function setSpotsState() {
     if (viewState) {
       const res = await getSpotsByLatLong(
         viewState.latitude,
         viewState.longitude,
+        startDate,
+        endDate,
         0.01,
       );
 
@@ -56,7 +60,11 @@ export default function HomePage() {
         </Grid>
       )}
       <Grid item>
-        <SpotSearchSection setViewState={setViewState} />
+        <SpotSearchSection
+          setViewState={setViewState}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+        />
         <SpotsReserveSection spots={spots} />
       </Grid>
     </Grid>

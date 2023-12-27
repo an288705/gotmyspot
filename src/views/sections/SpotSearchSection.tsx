@@ -11,13 +11,32 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { handleSpotSearch } from "../../controllers/apis";
 
-export default function SpotSearchSection(props: { setViewState: any }) {
+export default function SpotSearchSection(props: {
+  setViewState: any;
+  setStartDate: any;
+  setEndDate: any;
+}) {
+  const [startDay, setStartDay] = React.useState<Date>(new Date());
+  const [startTime, setStartTime] = React.useState<Date>(new Date());
+  const [endDay, setEndDay] = React.useState<Date>(new Date());
+  const [endTime, setEndTime] = React.useState<Date>(new Date());
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
         component="form"
         noValidate
-        onSubmit={(event) => handleSpotSearch(event, props.setViewState)}
+        onSubmit={(event) =>
+          handleSpotSearch(
+            event,
+            startDay,
+            startTime,
+            endDay,
+            endTime,
+            props.setViewState,
+            props.setStartDate,
+            props.setEndDate,
+          )
+        }
         sx={{ mt: 3 }}
       >
         Location
@@ -33,19 +52,25 @@ export default function SpotSearchSection(props: { setViewState: any }) {
           <Grid item>
             Start
             <div>
-              <DatePicker />
+              <DatePicker
+                onChange={(date: any) => setStartDay(new Date(date))}
+              />
             </div>
             <div>
-              <TimePicker />
+              <TimePicker
+                onChange={(time: any) => setStartTime(new Date(time))}
+              />
             </div>
           </Grid>
           <Grid item>
             End
             <div>
-              <DatePicker />
+              <DatePicker onChange={(date: any) => setEndDay(new Date(date))} />
             </div>
             <div>
-              <TimePicker />
+              <TimePicker
+                onChange={(time: any) => setEndTime(new Date(time))}
+              />
             </div>
           </Grid>
         </Grid>

@@ -406,6 +406,8 @@ export async function handleSignInHost(
 export async function getSpotsByLatLong(
   lat: number,
   long: number,
+  startDate: Date,
+  endDate: Date,
   radius: number,
 ) {
   const { data, error } = await supabase
@@ -428,6 +430,10 @@ export async function getSpotsByLatLong(
 
 export async function handleSpotSearch(
   event: React.FormEvent<HTMLFormElement>,
+  startDay: Date,
+  startTime: Date,
+  endDay: Date,
+  endTime: Date,
   setViewState: React.Dispatch<
     React.SetStateAction<{
       longitude: number;
@@ -435,11 +441,16 @@ export async function handleSpotSearch(
       zoom: number;
     }>
   >,
+  setStartDate: any,
+  setEndDate: any,
 ) {
   event.preventDefault();
   console.log("e val", event);
   const formData = new FormData(event.currentTarget);
   console.log("location search val", formData.get("location"));
+  console.log("time", combineDateAndTime(startDay, startTime));
+  setStartDate(combineDateAndTime(startDay, startTime));
+  setEndDate(combineDateAndTime(endDay, endTime));
 
   const rawLocation = String(formData.get("location"));
   const address = encodeURIComponent(rawLocation);
@@ -459,6 +470,18 @@ export async function handleSpotSearch(
     latitude: geocoding.features[0].center[1],
     zoom: 15,
   });
+}
+
+function combineDateAndTime(date: Date, time: Date) {
+  const timeString = time.getHours() + ":" + time.getMinutes() + ":00";
+
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1; // Jan is 0, dec is 11
+  var day = date.getDate();
+  var dateString = "" + year + "-" + month + "-" + day;
+  var combined = new Date(dateString + " " + timeString);
+
+  return combined;
 }
 
 export async function getSpotsByIds(ids: Array<string>) {
