@@ -423,9 +423,68 @@ export async function getSpotsByLatLong(
     return [];
   }
 
-  console.log(data);
+  console.log("res of lat/long search", data);
 
-  return data;
+  const res: any[] = await Promise.all(
+    data.map((spot) => {
+      console.log("spot.sessions in data", spot.sessions);
+      return supabase.from("session").select().in("id", spot.sessions);
+    }),
+  );
+
+  console.log("res of session search", res);
+
+  // now add session to data
+  // filter spot by available session using
+  // javascript Date class
+  const final = data
+    .map((spot, index) => {
+      spot["sessions"] = res[index].data;
+      console.log("spot with added sessions", spot);
+      return spot;
+    })
+    .filter((spot) => {
+      for (const session of spot.sessions) {
+        console.log("in sessions map", session);
+        if (session.type === "available") {
+          let start = combineDateAndTime(
+            new Date(session.startDay),
+            new Date(session.startTime),
+          );
+          let end = combineDateAndTime(
+            new Date(session.endDay),
+            new Date(session.endTime),
+          );
+
+          if (startDate >= start && endDate <= end) {
+            return true;
+          }
+        } else if (session.type === "schedule") {
+          const day = new Date();
+          var year = day.getFullYear();
+          var month = day.getMonth() + 1; // Jan is 0, dec is 11
+          var tempDay = day.getDate();
+          var dateString = "" + year + "-" + month + "-" + tempDay;
+          let start = new Date(dateString + " " + session.startTime);
+          let end = new Date(dateString + " " + session.endTime);
+          console.log("in schedule, here are the session times", start, end);
+          const startTime = combineDateAndTime(new Date(), startDate);
+          const endTime = combineDateAndTime(new Date(), endDate);
+          console.log(
+            "in schedule, here are the input times",
+            startTime,
+            endTime,
+          );
+          if (startTime >= start && endTime <= end) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+    });
+
+  return final;
 }
 
 export async function handleSpotSearch(
@@ -448,7 +507,11 @@ export async function handleSpotSearch(
   console.log("e val", event);
   const formData = new FormData(event.currentTarget);
   console.log("location search val", formData.get("location"));
-  console.log("time", combineDateAndTime(startDay, startTime));
+  console.log(
+    "time",
+    startTime.getHours() + ":" + startTime.getMinutes() + ":00",
+  );
+  console.log("date", combineDateAndTime(startDay, startTime));
   setStartDate(combineDateAndTime(startDay, startTime));
   setEndDate(combineDateAndTime(endDay, endTime));
 
@@ -472,13 +535,13 @@ export async function handleSpotSearch(
   });
 }
 
-function combineDateAndTime(date: Date, time: Date) {
+function combineDateAndTime(day: Date, time: Date) {
   const timeString = time.getHours() + ":" + time.getMinutes() + ":00";
-
-  var year = date.getFullYear();
-  var month = date.getMonth() + 1; // Jan is 0, dec is 11
-  var day = date.getDate();
-  var dateString = "" + year + "-" + month + "-" + day;
+  console.log("time string", timeString);
+  var year = day.getFullYear();
+  var month = day.getMonth() + 1; // Jan is 0, dec is 11
+  var tempDay = day.getDate();
+  var dateString = "" + year + "-" + month + "-" + tempDay;
   var combined = new Date(dateString + " " + timeString);
 
   return combined;
