@@ -4,9 +4,10 @@ import Map, { Marker } from "react-map-gl";
 import SpotsReserveSection from "../sections/SpotsReserveSection";
 import SpotSearchSection from "../sections/SpotSearchSection";
 import { getSpotsByLatLong } from "../../controllers/apis";
+import Spot from "../../models/interfaces/Spot";
 
 export default function HomePage() {
-  const [spots, setSpots] = React.useState(Array<any>);
+  const [spots, setSpots] = React.useState(Array<Spot>);
   const [viewState, setViewState] = React.useState<any>();
   const [startDate, setStartDate] = React.useState<Date>(new Date());
   const [endDate, setEndDate] = React.useState<Date>(new Date());

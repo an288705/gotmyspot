@@ -1,9 +1,8 @@
 import { Button, Grid, Icons } from "../../libraries/gotmyspot-ui-library";
+import Spot from "../../models/interfaces/Spot";
 import SpotReserveCard from "../cards/SpotReserveCard";
 
-export default function SpotsReserveSection(props: {
-  spots: Array<{ spotInfo: string; paymentLink: any }>;
-}) {
+export default function SpotsReserveSection(props: { spots: Array<Spot> }) {
   return (
     <>
       <Grid container>

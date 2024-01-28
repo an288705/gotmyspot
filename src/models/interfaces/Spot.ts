@@ -3,12 +3,13 @@ import Rate from "./Rate";
 
 export default interface Spot {
   id: string;
-  lat: number;
-  long: number;
-  pricing: number;
+  latitude: number;
+  longitude: number;
   address: string;
   details: string;
   amenities: string;
-  Availability: Array<Period>;
-  Rates: Array<Rate>;
+  isConfirmed: boolean;
+  availability: Array<Period>;
+  rates: Array<Rate>;
+  maxReserveTimeInSeconds: number;
 }

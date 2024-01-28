@@ -1,7 +1,8 @@
 import ReservationCard from "../cards/ReservationCard";
+import Reservation from "../../models/interfaces/Reservation";
 
 export default function ReservationsSection(props: {
-  reservations: Array<any>;
+  reservations: Array<Reservation>;
 }) {
   return (
     <div>

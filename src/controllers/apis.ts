@@ -3,6 +3,7 @@ import { stripe } from "../libraries/stripe";
 import { CustomerModel } from "../models/CustomerModel";
 import { HostModel } from "../models/HostModel";
 import { NavigateFunction } from "react-router-dom";
+import Rate from "../models/interfaces/Rate";
 
 export async function handleCustomerAuth(
   event: React.FormEvent<HTMLFormElement>,
@@ -425,12 +426,12 @@ export async function getSpotsByLatLong(
 
   console.log("res of lat/long search", data);
 
-  // have rates with promise. The promise doesn't
-  // need to be fulfilled for this api so no need
-  // to await
-  const spotRates: any[] = data.map((spot) => {
-    return supabase.from("rate").select().in("id", spot.rates);
-  });
+  const spotRates: any[] = await Promise.all(
+    data.map((spot) => {
+      console.log("spot.rates in data", spot.sessions);
+      return supabase.from("rate").select().in("id", spot.rates);
+    }),
+  );
 
   const spotSessions: any[] = await Promise.all(
     data.map((spot) => {
@@ -446,7 +447,10 @@ export async function getSpotsByLatLong(
   // javascript Date class
   const final = data
     .map((spot, index) => {
-      spot["rates"] = spotRates[index];
+      spot["rates"] = spotRates[index].data;
+      spot["maxReserveTimeInSeconds"] = Math.max(
+        spotRates[index].data.map((spot: any) => spot.lengthInSeconds),
+      );
       spot["sessions"] = spotSessions[index].data;
       console.log("spot with added sessions", spot);
       return spot;
@@ -591,13 +595,18 @@ export async function getReservationsByIds(ids: Array<string>) {
 }
 
 export async function openPaymentLinkForReservedTime(
-  spotRates: any,
+  spotRates: Array<Rate>,
   reservedTimeInSeconds: number,
+  maxReserveTimeInSeconds: number,
   address: string,
 ) {
+  if (reservedTimeInSeconds > maxReserveTimeInSeconds) {
+    alert(
+      "Your reservation exceeds the parking spot's time limit. Please reduce the reservation time",
+    );
+  }
   // filter smaller times, sort, rate is index 0
-  const { data, error } = await spotRates;
-  const rate = data
+  const rate = spotRates
     .filter((a: any) => a.lengthInSeconds >= reservedTimeInSeconds)
     .sort((a: any, b: any) => a.lengthInSeconds - b.lengthInSeconds)[0];
   console.log("rate is", rate);

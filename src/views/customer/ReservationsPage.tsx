@@ -3,9 +3,10 @@ import { Typography } from "../../libraries/gotmyspot-ui-library";
 import ReservationsSection from "../sections/ReservationsSection";
 import SpotsReserveSection from "../sections/SpotsReserveSection";
 import { getReservationsByIds } from "../../controllers/apis";
+import Reservation from "../../models/interfaces/Reservation";
 
 export default function ReservationsPage() {
-  const [reservations, setReservations] = React.useState(Array<any>);
+  const [reservations, setReservations] = React.useState(Array<Reservation>);
 
   async function setReservationsState() {
     const res = await getReservationsByIds([
@@ -25,7 +26,7 @@ export default function ReservationsPage() {
       </Typography>
       <ReservationsSection reservations={reservations} />
       <Typography sx={{ textDecoration: "underline" }}>Saved spots</Typography>
-      <SpotsReserveSection spots={reservations} />
+      {/* <SpotsReserveSection spots={spots} /> */}
     </div>
   );
 }

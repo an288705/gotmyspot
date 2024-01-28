@@ -6,10 +6,11 @@ import ReservationsSection from "../sections/ReservationsSection";
 import SpotsSection from "../sections/SpotsSection";
 import { getSpotsByIds, setHostState } from "../../controllers/apis";
 import { HostContext } from "../../controllers/contexts";
+import Reservation from "../../models/interfaces/Reservation";
 
 export default function HostHome() {
   const host = React.useContext(HostContext);
-  const [reservations, setReservations] = React.useState(Array<any>);
+  const [reservations, setReservations] = React.useState(Array<Reservation>);
   const [settings, setSettings] = React.useState<
     { text: string; href: string }[]
   >([{ text: "Sign In", href: "/sign-in" }]);
@@ -41,7 +42,7 @@ export default function HostHome() {
           <Typography sx={{ textDecoration: "underline" }}>
             Manage spots
           </Typography>
-          <SpotsSection spots={reservations} />
+          {/* <SpotsSection spots={spots} /> */}
           <Typography sx={{ textDecoration: "underline" }}>
             Reservations
           </Typography>
