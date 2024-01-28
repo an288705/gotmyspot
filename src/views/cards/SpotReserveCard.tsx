@@ -3,6 +3,7 @@ import { Button, Card } from "../../libraries/gotmyspot-ui-library";
 import { openPaymentLinkForReservedTime } from "../../controllers/apis";
 
 export default function SpotReserveCard(props: { spot: any }) {
+  console.log("spot in spotReserveCard", props.spot);
   return (
     <Card>
       <div>{props.spot.address}</div>

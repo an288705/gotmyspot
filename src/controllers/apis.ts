@@ -425,21 +425,29 @@ export async function getSpotsByLatLong(
 
   console.log("res of lat/long search", data);
 
-  const res: any[] = await Promise.all(
+  // have rates with promise. The promise doesn't
+  // need to be fulfilled for this api so no need
+  // to await
+  const spotRates: any[] = data.map((spot) => {
+    return supabase.from("rate").select().in("id", spot.rates);
+  });
+
+  const spotSessions: any[] = await Promise.all(
     data.map((spot) => {
       console.log("spot.sessions in data", spot.sessions);
       return supabase.from("session").select().in("id", spot.sessions);
     }),
   );
 
-  console.log("res of session search", res);
+  console.log("res of session search", spotSessions);
 
   // now add session to data
   // filter spot by available session using
   // javascript Date class
   const final = data
     .map((spot, index) => {
-      spot["sessions"] = res[index].data;
+      spot["rates"] = spotRates[index];
+      spot["sessions"] = spotSessions[index].data;
       console.log("spot with added sessions", spot);
       return spot;
     })
@@ -583,16 +591,19 @@ export async function getReservationsByIds(ids: Array<string>) {
 }
 
 export async function openPaymentLinkForReservedTime(
-  rates: Array<number>,
-  reservedTime: number,
+  spotRates: any,
+  reservedTimeInSeconds: number,
   address: string,
 ) {
-  // sort rates then search until the time is under.
-  // that will be your cost
-  const cost = 1000;
+  // filter smaller times, sort, rate is index 0
+  const { data, error } = await spotRates;
+  const rate = data
+    .filter((a: any) => a.lengthInSeconds >= reservedTimeInSeconds)
+    .sort((a: any, b: any) => a.lengthInSeconds - b.lengthInSeconds)[0];
+  console.log("rate is", rate);
   const price = await stripe.prices.create({
-    currency: "usd",
-    unit_amount: cost,
+    currency: rate.currency,
+    unit_amount: rate.cost,
     product_data: {
       name: address,
     },
