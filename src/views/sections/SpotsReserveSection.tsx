@@ -19,7 +19,7 @@ export default function SpotsReserveSection(props: { spots: Array<Spot> }) {
       </Grid>
       <div>
         {props.spots.map((spot) => (
-          <SpotReserveCard spot={spot} />
+          <SpotReserveCard spot={spot} reservationTimeInSeconds={100} />
         ))}
       </div>
     </>

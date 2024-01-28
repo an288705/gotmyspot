@@ -11,5 +11,5 @@ export default interface Spot {
   isConfirmed: boolean;
   availability: Array<Period>;
   rates: Array<Rate>;
-  maxReserveTimeInSeconds: number;
+  maxReservationTimeInSeconds: number;
 }

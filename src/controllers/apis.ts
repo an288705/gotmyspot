@@ -1,8 +1,11 @@
 import { supabase } from "../libraries/supabase";
+import { PostgrestSingleResponse } from "@supabase/supabase-js";
 import { stripe } from "../libraries/stripe";
 import { CustomerModel } from "../models/CustomerModel";
 import { HostModel } from "../models/HostModel";
 import { NavigateFunction } from "react-router-dom";
+
+import Spot from "../models/interfaces/Spot";
 import Rate from "../models/interfaces/Rate";
 
 export async function handleCustomerAuth(
@@ -426,36 +429,54 @@ export async function getSpotsByLatLong(
 
   console.log("res of lat/long search", data);
 
-  const spotRates: any[] = await Promise.all(
+  const spotRatesArray: PostgrestSingleResponse<Rate[]>[] = await Promise.all(
     data.map((spot) => {
       console.log("spot.rates in data", spot.sessions);
       return supabase.from("rate").select().in("id", spot.rates);
     }),
   );
 
-  const spotSessions: any[] = await Promise.all(
-    data.map((spot) => {
-      console.log("spot.sessions in data", spot.sessions);
-      return supabase.from("session").select().in("id", spot.sessions);
-    }),
-  );
+  const spotSessionsArray: PostgrestSingleResponse<Spot[]>[] =
+    await Promise.all(
+      data.map((spot) => {
+        console.log("spot.sessions in data", spot.sessions);
+        return supabase.from("session").select().in("id", spot.sessions);
+      }),
+    );
 
-  console.log("res of session search", spotSessions);
+  console.log("res of sessions array search", spotSessionsArray);
 
   // now add session to data
   // filter spot by available session using
   // javascript Date class
   const final = data
     .map((spot, index) => {
-      spot["rates"] = spotRates[index].data;
-      spot["maxReserveTimeInSeconds"] = Math.max(
-        spotRates[index].data.map((spot: any) => spot.lengthInSeconds),
-      );
-      spot["sessions"] = spotSessions[index].data;
-      console.log("spot with added sessions", spot);
+      const { data: spotRates, error: spotRatesError } = spotRatesArray[index];
+      const { data: spotSessions, error: spotSessionsError } =
+        spotSessionsArray[index];
+
+      if (spotRates && spotSessions) {
+        spot["rates"] = spotRates;
+        spot["maxReservationTimeInSeconds"] = Math.max(
+          ...spotRates.map((rate: Rate) => rate.lengthInSeconds),
+        );
+        spot["sessions"] = spotSessions;
+        console.log("spot with added sessions", spot);
+      }
+
       return spot;
     })
     .filter((spot) => {
+      const startTime = combineDateAndTime(new Date(), startDate);
+      const endTime = combineDateAndTime(new Date(), endDate);
+      console.log("here are the input times", startTime, endTime);
+      const reservationTimeInSeconds =
+        Math.abs(endTime.getTime() - startTime.getTime()) / 1000;
+      console.log("reservation time", reservationTimeInSeconds);
+      if (reservationTimeInSeconds > spot.maxReservationTimeInSeconds) {
+        return false;
+      }
+
       for (const session of spot.sessions) {
         console.log("in sessions map", session);
         if (session.type === "available") {
@@ -480,13 +501,6 @@ export async function getSpotsByLatLong(
           let start = new Date(dateString + " " + session.startTime);
           let end = new Date(dateString + " " + session.endTime);
           console.log("in schedule, here are the session times", start, end);
-          const startTime = combineDateAndTime(new Date(), startDate);
-          const endTime = combineDateAndTime(new Date(), endDate);
-          console.log(
-            "in schedule, here are the input times",
-            startTime,
-            endTime,
-          );
           if (startTime >= start && endTime <= end) {
             return true;
           }
@@ -596,18 +610,18 @@ export async function getReservationsByIds(ids: Array<string>) {
 
 export async function openPaymentLinkForReservedTime(
   spotRates: Array<Rate>,
-  reservedTimeInSeconds: number,
-  maxReserveTimeInSeconds: number,
+  reservationTimeInSeconds: number,
+  maxReservationTimeInSeconds: number,
   address: string,
 ) {
-  if (reservedTimeInSeconds > maxReserveTimeInSeconds) {
+  if (reservationTimeInSeconds > maxReservationTimeInSeconds) {
     alert(
       "Your reservation exceeds the parking spot's time limit. Please reduce the reservation time",
     );
   }
   // filter smaller times, sort, rate is index 0
   const rate = spotRates
-    .filter((a: any) => a.lengthInSeconds >= reservedTimeInSeconds)
+    .filter((a: any) => a.lengthInSeconds >= reservationTimeInSeconds)
     .sort((a: any, b: any) => a.lengthInSeconds - b.lengthInSeconds)[0];
   console.log("rate is", rate);
   const price = await stripe.prices.create({
