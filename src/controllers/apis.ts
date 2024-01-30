@@ -54,10 +54,10 @@ export async function handleHostAuth(
   const email = String(formData.get("email"));
   const password = String(formData.get("password"));
   const phone = String(formData.get("phone"));
-  let spots: any[] = [];
-  spotFormCount.map((count) =>
-    spots.push(String(formData.get("spotAddress" + String(count)))),
-  );
+  // let spots: Spot[] = [];
+  // spotFormCount.map((count) =>
+  //   spots.push(String(formData.get("spotAddress" + String(count)))),
+  // );
 
   const { data, error } = await supabase.auth.signUp({
     email: email,
@@ -520,14 +520,17 @@ export async function handleSpotSearch(
   endDay: Date,
   endTime: Date,
   setViewState: React.Dispatch<
-    React.SetStateAction<{
-      longitude: number;
-      latitude: number;
-      zoom: number;
-    }>
+    React.SetStateAction<
+      | {
+          longitude: number;
+          latitude: number;
+          zoom: number;
+        }
+      | undefined
+    >
   >,
-  setStartDate: any,
-  setEndDate: any,
+  setStartDate: React.Dispatch<React.SetStateAction<Date>>,
+  setEndDate: React.Dispatch<React.SetStateAction<Date>>,
 ) {
   event.preventDefault();
   console.log("e val", event);
@@ -619,10 +622,10 @@ export async function openPaymentLinkForReservedTime(
       "Your reservation exceeds the parking spot's time limit. Please reduce the reservation time",
     );
   }
-  // filter smaller times, sort, rate is index 0
+  // remove rates shorter than reservation, sort, rate is index 0
   const rate = spotRates
-    .filter((a: any) => a.lengthInSeconds >= reservationTimeInSeconds)
-    .sort((a: any, b: any) => a.lengthInSeconds - b.lengthInSeconds)[0];
+    .filter((rate: Rate) => rate.lengthInSeconds >= reservationTimeInSeconds)
+    .sort((a: Rate, b: Rate) => a.lengthInSeconds - b.lengthInSeconds)[0];
   console.log("rate is", rate);
   const price = await stripe.prices.create({
     currency: rate.currency,

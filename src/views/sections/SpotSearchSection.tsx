@@ -12,9 +12,18 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { handleSpotSearch } from "../../controllers/apis";
 
 export default function SpotSearchSection(props: {
-  setViewState: any;
-  setStartDate: any;
-  setEndDate: any;
+  setViewState: React.Dispatch<
+    React.SetStateAction<
+      | {
+          longitude: number;
+          latitude: number;
+          zoom: number;
+        }
+      | undefined
+    >
+  >;
+  setStartDate: React.Dispatch<React.SetStateAction<Date>>;
+  setEndDate: React.Dispatch<React.SetStateAction<Date>>;
 }) {
   const [startDay, setStartDay] = React.useState<Date>(new Date());
   const [startTime, setStartTime] = React.useState<Date>(new Date());

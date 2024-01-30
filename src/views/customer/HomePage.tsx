@@ -8,7 +8,11 @@ import Spot from "../../models/interfaces/Spot";
 
 export default function HomePage() {
   const [spots, setSpots] = React.useState(Array<Spot>);
-  const [viewState, setViewState] = React.useState<any>();
+  const [viewState, setViewState] = React.useState<{
+    longitude: number;
+    latitude: number;
+    zoom: number;
+  }>();
   const [startDate, setStartDate] = React.useState<Date>(new Date());
   const [endDate, setEndDate] = React.useState<Date>(new Date());
 
