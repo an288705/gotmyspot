@@ -611,21 +611,17 @@ export async function getReservationsByIds(ids: Array<string>) {
   return data;
 }
 
-export async function openPaymentLinkForReservedTime(
+export function getRateWithReservationTime(
   spotRates: Array<Rate>,
   reservationTimeInSeconds: number,
-  maxReservationTimeInSeconds: number,
-  address: string,
 ) {
-  if (reservationTimeInSeconds > maxReservationTimeInSeconds) {
-    alert(
-      "Your reservation exceeds the parking spot's time limit. Please reduce the reservation time",
-    );
-  }
   // remove rates shorter than reservation, sort, rate is index 0
-  const rate = spotRates
+  return spotRates
     .filter((rate: Rate) => rate.lengthInSeconds >= reservationTimeInSeconds)
     .sort((a: Rate, b: Rate) => a.lengthInSeconds - b.lengthInSeconds)[0];
+}
+
+export async function openPaymentLinkForRate(rate: Rate, address: string) {
   console.log("rate is", rate);
   const price = await stripe.prices.create({
     currency: rate.currency,

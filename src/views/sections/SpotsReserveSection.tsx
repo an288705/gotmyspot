@@ -1,3 +1,4 @@
+import { getRateWithReservationTime } from "../../controllers/apis";
 import { Button, Grid, Icons } from "../../libraries/gotmyspot-ui-library";
 import Spot from "../../models/interfaces/Spot";
 import SpotReserveCard from "../cards/SpotReserveCard";
@@ -19,7 +20,10 @@ export default function SpotsReserveSection(props: { spots: Array<Spot> }) {
       </Grid>
       <div>
         {props.spots.map((spot) => (
-          <SpotReserveCard spot={spot} reservationTimeInSeconds={100} />
+          <SpotReserveCard
+            spot={spot}
+            rate={getRateWithReservationTime(spot.rates, 100)}
+          />
         ))}
       </div>
     </>
