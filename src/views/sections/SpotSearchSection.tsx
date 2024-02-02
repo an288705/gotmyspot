@@ -8,6 +8,7 @@ import {
   TimePicker,
   TextField,
 } from "../../libraries/gotmyspot-ui-library";
+import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { handleSpotSearch } from "../../controllers/apis";
 
@@ -25,10 +26,18 @@ export default function SpotSearchSection(props: {
   setStartDate: React.Dispatch<React.SetStateAction<Date>>;
   setEndDate: React.Dispatch<React.SetStateAction<Date>>;
 }) {
+  const minutesToMilliseconds = 1000 * 60;
   const [startDay, setStartDay] = React.useState<Date>(new Date());
-  const [startTime, setStartTime] = React.useState<Date>(new Date());
+  const [startTime, setStartTime] = React.useState<Date>(
+    new Date(
+      Math.ceil(new Date().getTime() / (30 * minutesToMilliseconds)) *
+        30 *
+        minutesToMilliseconds,
+    ),
+  );
   const [endDay, setEndDay] = React.useState<Date>(new Date());
   const [endTime, setEndTime] = React.useState<Date>(new Date());
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box
@@ -62,11 +71,13 @@ export default function SpotSearchSection(props: {
             Start
             <div>
               <DatePicker
+                value={dayjs(startDay)}
                 onChange={(date: any) => setStartDay(new Date(date))}
               />
             </div>
             <div>
               <TimePicker
+                value={dayjs(startTime)}
                 onChange={(time: any) => setStartTime(new Date(time))}
               />
             </div>
