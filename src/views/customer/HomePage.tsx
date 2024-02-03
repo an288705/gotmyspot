@@ -15,6 +15,7 @@ export default function HomePage() {
   }>();
   const [startDate, setStartDate] = React.useState<Date>(new Date());
   const [endDate, setEndDate] = React.useState<Date>(new Date());
+  console.log(spots);
 
   async function setSpotsState() {
     if (viewState) {
@@ -70,7 +71,7 @@ export default function HomePage() {
           setStartDate={setStartDate}
           setEndDate={setEndDate}
         />
-        <SpotsReserveSection spots={spots} />
+        {spots.length > 0 && <SpotsReserveSection spots={spots} />}
       </Grid>
     </Grid>
   );
