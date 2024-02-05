@@ -3,7 +3,10 @@ import { Grid, Paper } from "../../libraries/gotmyspot-ui-library";
 import Map, { Marker } from "react-map-gl";
 import SpotsReserveSection from "../sections/SpotsReserveSection";
 import SpotSearchSection from "../sections/SpotSearchSection";
-import { getSpotsByLatLong } from "../../controllers/apis";
+import {
+  getRateWithReservationTime,
+  getSpotsByLatLong,
+} from "../../controllers/apis";
 import Spot from "../../models/interfaces/Spot";
 
 export default function HomePage() {
@@ -57,9 +60,13 @@ export default function HomePage() {
               <Marker
                 latitude={spot.latitude}
                 longitude={spot.longitude}
-                onClick={() => {}}
+                onClick={() => {
+                  alert("pop up card on click");
+                }}
               >
-                <Paper>$20</Paper>
+                <Paper>
+                  ${getRateWithReservationTime(spot.rates, 100).cost / 100}
+                </Paper>
               </Marker>
             ))}
           </Map>
@@ -71,7 +78,13 @@ export default function HomePage() {
           setStartDate={setStartDate}
           setEndDate={setEndDate}
         />
-        {spots.length > 0 && <SpotsReserveSection spots={spots} />}
+        {spots.length > 0 && viewState && (
+          <SpotsReserveSection
+            spots={spots}
+            setSpots={setSpots}
+            viewState={viewState}
+          />
+        )}
       </Grid>
     </Grid>
   );

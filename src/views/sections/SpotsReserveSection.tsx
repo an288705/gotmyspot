@@ -1,5 +1,8 @@
 import * as React from "react";
-import { getRateWithReservationTime } from "../../controllers/apis";
+import {
+  getDistanceFromLatLong,
+  getRateWithReservationTime,
+} from "../../controllers/apis";
 import {
   Box,
   Button,
@@ -24,7 +27,15 @@ const style = {
   p: 4,
 };
 
-export default function SpotsReserveSection(props: { spots: Array<Spot> }) {
+export default function SpotsReserveSection(props: {
+  spots: Array<Spot>;
+  setSpots: React.Dispatch<React.SetStateAction<Spot[]>>;
+  viewState: {
+    longitude: number;
+    latitude: number;
+    zoom: number;
+  };
+}) {
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   return (
     <>
@@ -42,8 +53,44 @@ export default function SpotsReserveSection(props: { spots: Array<Spot> }) {
           >
             <Box sx={style}>
               Sort By:
-              <Button onClick={() => setOpenModal(false)}>Distance</Button>
-              <Button onClick={() => setOpenModal(false)}>Price</Button>
+              <Button
+                onClick={() => {
+                  props.setSpots(
+                    props.spots.sort(
+                      (a: Spot, b: Spot) =>
+                        getRateWithReservationTime(a.rates, 100).cost -
+                        getRateWithReservationTime(b.rates, 100).cost,
+                    ),
+                  );
+                  setOpenModal(false);
+                }}
+              >
+                Price
+              </Button>
+              <Button
+                onClick={() => {
+                  props.setSpots(
+                    props.spots.sort(
+                      (a: Spot, b: Spot) =>
+                        getDistanceFromLatLong(
+                          a.latitude,
+                          a.longitude,
+                          props.viewState.latitude,
+                          props.viewState.longitude,
+                        ) -
+                        getDistanceFromLatLong(
+                          b.latitude,
+                          b.longitude,
+                          props.viewState.latitude,
+                          props.viewState.longitude,
+                        ),
+                    ),
+                  );
+                  setOpenModal(false);
+                }}
+              >
+                Distance
+              </Button>
             </Box>
           </Modal>
         </Grid>
