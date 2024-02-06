@@ -4,13 +4,15 @@ import Map, { Marker } from "react-map-gl";
 import SpotsReserveSection from "../sections/SpotsReserveSection";
 import SpotSearchSection from "../sections/SpotSearchSection";
 import {
+  getDistanceFromLatLong,
   getRateWithReservationTime,
   getSpotsByLatLong,
 } from "../../controllers/apis";
 import Spot from "../../models/interfaces/Spot";
 
 export default function HomePage() {
-  const [spots, setSpots] = React.useState(Array<Spot>);
+  const [spots, setSpots] = React.useState<Array<Spot>>();
+  const [sort, setSort] = React.useState<String>("price");
   const [viewState, setViewState] = React.useState<{
     longitude: number;
     latitude: number;
@@ -30,8 +32,33 @@ export default function HomePage() {
         0.01,
       );
 
-      console.log("res", res);
-      setSpots(res);
+      console.log("sort is", sort);
+
+      const spot = res.sort((a: Spot, b: Spot) => {
+        if (sort === "price") {
+          return (
+            getRateWithReservationTime(a.rates, 100).cost -
+            getRateWithReservationTime(b.rates, 100).cost
+          );
+        } else {
+          return (
+            getDistanceFromLatLong(
+              a.latitude,
+              a.longitude,
+              viewState.latitude,
+              viewState.longitude,
+            ) -
+            getDistanceFromLatLong(
+              b.latitude,
+              b.longitude,
+              viewState.latitude,
+              viewState.longitude,
+            )
+          );
+        }
+      });
+      console.log("res", spot);
+      setSpots(spot);
     }
   }
 
@@ -41,7 +68,7 @@ export default function HomePage() {
 
   return (
     <Grid container>
-      {viewState && (
+      {viewState && spots && (
         <Grid item style={{ height: "50vh", width: "50%" }}>
           <Map
             {...viewState}
@@ -78,10 +105,11 @@ export default function HomePage() {
           setStartDate={setStartDate}
           setEndDate={setEndDate}
         />
-        {spots.length > 0 && viewState && (
+        {viewState && spots && (
           <SpotsReserveSection
             spots={spots}
             setSpots={setSpots}
+            setSort={setSort}
             viewState={viewState}
           />
         )}

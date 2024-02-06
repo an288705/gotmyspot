@@ -29,7 +29,8 @@ const style = {
 
 export default function SpotsReserveSection(props: {
   spots: Array<Spot>;
-  setSpots: React.Dispatch<React.SetStateAction<Spot[]>>;
+  setSpots: React.Dispatch<React.SetStateAction<Spot[] | undefined>>;
+  setSort: React.Dispatch<React.SetStateAction<String>>;
   viewState: {
     longitude: number;
     latitude: number;
@@ -62,6 +63,7 @@ export default function SpotsReserveSection(props: {
                         getRateWithReservationTime(b.rates, 100).cost,
                     ),
                   );
+                  props.setSort("price");
                   setOpenModal(false);
                 }}
               >
@@ -86,6 +88,7 @@ export default function SpotsReserveSection(props: {
                         ),
                     ),
                   );
+                  props.setSort("distance");
                   setOpenModal(false);
                 }}
               >
@@ -93,11 +96,6 @@ export default function SpotsReserveSection(props: {
               </Button>
             </Box>
           </Modal>
-        </Grid>
-        <Grid item>
-          <Button>
-            <Icons.FilterAlt /> Filter
-          </Button>
         </Grid>
       </Grid>
       <div>
