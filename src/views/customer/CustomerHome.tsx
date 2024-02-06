@@ -22,7 +22,7 @@ export default function CustomerHome(props: { page: JSX.Element }) {
   return (
     <div>
       <NavbarSection settings={settings} />
-      {props.page}
+      {customer.customerId && props.page}
     </div>
   );
 }

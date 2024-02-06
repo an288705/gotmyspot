@@ -6,7 +6,8 @@ export class CustomerModel {
   public email: string;
   public phone: string;
   public paymentInfo: string;
-  public reservations: Array<Reservation>;
+  public reservationsIds: Array<string>;
+  public savedSpotsIds: Array<string>;
   public isCustomerSet: boolean;
 
   constructor() {
@@ -15,7 +16,8 @@ export class CustomerModel {
     this.email = "";
     this.phone = "";
     this.paymentInfo = "";
-    this.reservations = [];
+    this.reservationsIds = [];
+    this.savedSpotsIds = [];
     this.isCustomerSet = false;
   }
 
@@ -29,14 +31,16 @@ export class CustomerModel {
     email: string,
     phone: string,
     paymentInfo: string,
-    reservations: Array<Reservation>,
+    reservationsIds: Array<string>,
+    savedSpotsIds: Array<string>,
   ) => {
     this.customerId = customerId;
     this.name = name;
     this.email = email;
     this.phone = phone;
     this.paymentInfo = paymentInfo;
-    this.reservations = reservations;
+    this.reservationsIds = reservationsIds;
+    this.savedSpotsIds = savedSpotsIds;
     this.isCustomerSet = true;
   };
 
@@ -46,7 +50,8 @@ export class CustomerModel {
     this.email = "";
     this.phone = "";
     this.paymentInfo = "";
-    this.reservations = [];
+    this.reservationsIds = [];
+    this.savedSpotsIds = [];
     this.isCustomerSet = false;
   };
 }

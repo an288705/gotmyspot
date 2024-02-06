@@ -1,5 +1,12 @@
 import React from "react";
-import { Grid, Paper } from "../../libraries/gotmyspot-ui-library";
+import {
+  Box,
+  Button,
+  Grid,
+  Icons,
+  Modal,
+  Paper,
+} from "../../libraries/gotmyspot-ui-library";
 import Map, { Marker } from "react-map-gl";
 import SpotsReserveSection from "../sections/SpotsReserveSection";
 import SpotSearchSection from "../sections/SpotSearchSection";
@@ -9,6 +16,18 @@ import {
   getSpotsByLatLong,
 } from "../../controllers/apis";
 import Spot from "../../models/interfaces/Spot";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function HomePage() {
   const [spots, setSpots] = React.useState<Array<Spot>>();
@@ -20,6 +39,7 @@ export default function HomePage() {
   }>();
   const [startDate, setStartDate] = React.useState<Date>(new Date());
   const [endDate, setEndDate] = React.useState<Date>(new Date());
+  const [openModal, setOpenModal] = React.useState<boolean>(false);
   console.log(spots);
 
   async function setSpotsState() {
@@ -106,12 +126,67 @@ export default function HomePage() {
           setEndDate={setEndDate}
         />
         {viewState && spots && (
-          <SpotsReserveSection
-            spots={spots}
-            setSpots={setSpots}
-            setSort={setSort}
-            viewState={viewState}
-          />
+          <>
+            <Grid container>
+              <Grid item>
+                <Button onClick={() => setOpenModal(true)}>
+                  <Icons.Sort /> Sort
+                </Button>
+                <Modal
+                  aria-labelledby="transition-modal-title"
+                  aria-describedby="transition-modal-description"
+                  open={openModal}
+                  onClose={() => setOpenModal(false)}
+                  closeAfterTransition
+                >
+                  <Box sx={style}>
+                    Sort By:
+                    <Button
+                      onClick={() => {
+                        setSpots(
+                          spots.sort(
+                            (a: Spot, b: Spot) =>
+                              getRateWithReservationTime(a.rates, 100).cost -
+                              getRateWithReservationTime(b.rates, 100).cost,
+                          ),
+                        );
+                        setSort("price");
+                        setOpenModal(false);
+                      }}
+                    >
+                      Price
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setSpots(
+                          spots.sort(
+                            (a: Spot, b: Spot) =>
+                              getDistanceFromLatLong(
+                                a.latitude,
+                                a.longitude,
+                                viewState.latitude,
+                                viewState.longitude,
+                              ) -
+                              getDistanceFromLatLong(
+                                b.latitude,
+                                b.longitude,
+                                viewState.latitude,
+                                viewState.longitude,
+                              ),
+                          ),
+                        );
+                        setSort("distance");
+                        setOpenModal(false);
+                      }}
+                    >
+                      Distance
+                    </Button>
+                  </Box>
+                </Modal>
+              </Grid>
+            </Grid>
+            <SpotsReserveSection spots={spots} />
+          </>
         )}
       </Grid>
     </Grid>

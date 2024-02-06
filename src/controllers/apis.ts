@@ -199,7 +199,8 @@ export async function handleUpdateCustomer(
         sessionData.session.user.email || "",
         sessionData.session.user.phone || "",
         data[0].paymentInfo,
-        data[0].reservations,
+        data[0].reservationsIds,
+        data[0].savedSpotsIds,
       );
     }
   }
@@ -292,7 +293,8 @@ export async function setCustomerState(
       sessionData.session.user.email || "",
       sessionData.session.user.phone || "",
       data[0].paymentInfo,
-      data[0].reservations,
+      data[0].reservationsIds,
+      data[0].savedSpotsIds,
     );
     return {
       settings: [
@@ -609,6 +611,60 @@ export async function getReservationsByIds(ids: Array<string>) {
   console.log(data);
 
   return data;
+}
+
+export async function getSavedSpotsByIds(ids: Array<string>) {
+  const { data, error } = await supabase
+    .from("spotInfo")
+    .select()
+    .in("id", ids);
+
+  console.log("data from saved spots", data);
+
+  if (error) {
+    alert(error);
+    console.log(error);
+    return [];
+  }
+
+  const spotRatesArray: PostgrestSingleResponse<Rate[]>[] = await Promise.all(
+    data.map((spot) => {
+      console.log("spot.rates in data", spot.sessions);
+      return supabase.from("rate").select().in("id", spot.rates);
+    }),
+  );
+
+  const spotSessionsArray: PostgrestSingleResponse<Spot[]>[] =
+    await Promise.all(
+      data.map((spot) => {
+        console.log("spot.sessions in data", spot.sessions);
+        return supabase.from("session").select().in("id", spot.sessions);
+      }),
+    );
+
+  console.log("res of sessions array search", spotSessionsArray);
+
+  // now add session to data
+  // filter spot by available session using
+  // javascript Date class
+  const final = data.map((spot, index) => {
+    const { data: spotRates, error: spotRatesError } = spotRatesArray[index];
+    const { data: spotSessions, error: spotSessionsError } =
+      spotSessionsArray[index];
+
+    if (spotRates && spotSessions) {
+      spot["rates"] = spotRates;
+      spot["maxReservationTimeInSeconds"] = Math.max(
+        ...spotRates.map((rate: Rate) => rate.lengthInSeconds),
+      );
+      spot["sessions"] = spotSessions;
+      console.log("spot with added sessions", spot);
+    }
+
+    return spot;
+  });
+
+  return final;
 }
 
 export function getRateWithReservationTime(

@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Card, Grid } from "../../libraries/gotmyspot-ui-library";
 import { currency } from "../../constants";
 import { openPaymentLinkForRate } from "../../controllers/apis";
@@ -9,7 +8,7 @@ export default function SpotReserveCard(props: { spot: Spot; rate: Rate }) {
   console.log("spot in spotReserveCard", props.spot);
   return (
     <Card>
-      <Grid container spacing={1}>
+      <Grid container spacing={1} justifyContent="center">
         <Grid item>
           <img src={""} alt="img" />
         </Grid>
