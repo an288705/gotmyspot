@@ -5,7 +5,6 @@ import Spot from "../../models/interfaces/Spot";
 import Rate from "../../models/interfaces/Rate";
 
 export default function SpotReserveCard(props: { spot: Spot; rate: Rate }) {
-  console.log("spot in spotReserveCard", props.spot);
   return (
     <Card>
       <Grid container spacing={1} justifyContent="center">

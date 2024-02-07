@@ -31,6 +31,7 @@ const style = {
 
 export default function HomePage() {
   const [spots, setSpots] = React.useState<Array<Spot>>();
+  const [updateSpots, setUpdateSpots] = React.useState<Boolean>(true);
   const [sort, setSort] = React.useState<String>("price");
   const [viewState, setViewState] = React.useState<{
     longitude: number;
@@ -40,10 +41,9 @@ export default function HomePage() {
   const [startDate, setStartDate] = React.useState<Date>(new Date());
   const [endDate, setEndDate] = React.useState<Date>(new Date());
   const [openModal, setOpenModal] = React.useState<boolean>(false);
-  console.log(spots);
 
   async function setSpotsState() {
-    if (viewState) {
+    if (viewState && updateSpots) {
       const res = await getSpotsByLatLong(
         viewState.latitude,
         viewState.longitude,
@@ -79,12 +79,13 @@ export default function HomePage() {
       });
       console.log("res", spot);
       setSpots(spot);
+      setUpdateSpots(false);
     }
   }
 
   React.useEffect(() => {
     setSpotsState();
-  }, [viewState]);
+  }, [viewState, updateSpots]);
 
   return (
     <Grid container>
@@ -101,6 +102,7 @@ export default function HomePage() {
                 zoom: 15,
               })
             }
+            onDragEnd={() => setUpdateSpots(true)}
             mapStyle="mapbox://styles/mapbox/streets-v11"
           >
             {spots.map((spot) => (

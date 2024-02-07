@@ -515,7 +515,7 @@ export async function getSpotsByLatLong(
   return final;
 }
 
-export async function handleSpotSearch(
+export async function handleLatLongSearch(
   event: React.FormEvent<HTMLFormElement>,
   startDay: Date,
   startTime: Date,

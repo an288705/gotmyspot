@@ -10,7 +10,7 @@ import {
 } from "../../libraries/gotmyspot-ui-library";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { handleSpotSearch } from "../../controllers/apis";
+import { handleLatLongSearch } from "../../controllers/apis";
 
 export default function SpotSearchSection(props: {
   setViewState: React.Dispatch<
@@ -44,7 +44,7 @@ export default function SpotSearchSection(props: {
         component="form"
         noValidate
         onSubmit={(event) =>
-          handleSpotSearch(
+          handleLatLongSearch(
             event,
             startDay,
             startTime,
