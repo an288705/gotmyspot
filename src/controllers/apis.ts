@@ -249,7 +249,8 @@ export async function handleUpdateHost(
         sessionData.session.user.email || "",
         sessionData.session.user.phone || "",
         data[0].paymentInfo,
-        data[0].spots,
+        data[0].spotsIds,
+        data[0].reservationsIds,
       );
     }
   }
@@ -342,6 +343,7 @@ export async function setHostState(host: HostModel) {
       sessionData.session.user.phone || "",
       data[0].paymentInfo,
       data[0].spots,
+      data[0].reservationsIds,
     );
     return {
       settings: [
@@ -403,7 +405,8 @@ export async function handleSignInHost(
     authData.user.email,
     authData.user.phone || "",
     data[0].paymentInfo,
-    [],
+    data[0].spotsIds,
+    data[0].reservationsIds,
   );
 
   navigate("/host", { replace: true });

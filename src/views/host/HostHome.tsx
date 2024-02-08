@@ -21,7 +21,7 @@ export default function HostHome() {
   }
 
   async function setReservationsState() {
-    const res = await getSpotsByIds(["a9fa05c4-f027-4c6a-ad39-356542131e2d"]);
+    const res = await getSpotsByIds(host.reservationsIds);
     setReservations(res);
   }
 
@@ -32,7 +32,7 @@ export default function HostHome() {
   return (
     <div>
       <NavbarSection settings={settings} />
-      {host.isHostSet || true ? (
+      {host.isHostSet ? (
         <>
           <Typography sx={{ textDecoration: "underline" }}>
             Dashboard

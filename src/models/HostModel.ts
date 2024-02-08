@@ -7,7 +7,8 @@ export class HostModel {
   public email: string;
   public phone: string;
   public paymentInfo: string;
-  public spots: Array<Spot>;
+  public spotsIds: Array<string>;
+  public reservationsIds: Array<string>;
   public isHostSet: boolean;
 
   constructor() {
@@ -17,7 +18,8 @@ export class HostModel {
     this.email = "";
     this.phone = "";
     this.paymentInfo = "";
-    this.spots = [];
+    this.spotsIds = [];
+    this.reservationsIds = [];
     this.isHostSet = false;
   }
 
@@ -28,7 +30,8 @@ export class HostModel {
     email: string,
     phone: string,
     paymentInfo: string,
-    spots: Array<Spot>,
+    spotsIds: Array<string>,
+    reservationsIds: Array<string>,
   ) => {
     this.hostId = hostId;
     this.companyName = companyName;
@@ -36,7 +39,8 @@ export class HostModel {
     this.email = email;
     this.phone = phone;
     this.paymentInfo = paymentInfo;
-    this.spots = spots;
+    this.spotsIds = spotsIds;
+    this.reservationsIds = reservationsIds
     this.isHostSet = true;
   };
 
@@ -47,7 +51,8 @@ export class HostModel {
     this.email = "";
     this.phone = "";
     this.paymentInfo = "";
-    this.spots = [];
+    this.spotsIds = [];
+    this.reservationsIds = [];
     this.isHostSet = false;
   };
 }

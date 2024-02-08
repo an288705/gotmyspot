@@ -102,6 +102,7 @@ export default function HomePage() {
                 zoom: 15,
               })
             }
+            // TODO: we can just call getSpots here
             onDragEnd={() => setUpdateSpots(true)}
             mapStyle="mapbox://styles/mapbox/streets-v11"
           >
