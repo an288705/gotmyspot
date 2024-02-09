@@ -1,5 +1,3 @@
-import Spot from "./interfaces/Spot";
-
 export class HostModel {
   public hostId: string;
   public companyName: string;
