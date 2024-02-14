@@ -32,7 +32,7 @@ export default function HostHome() {
   return (
     <div>
       <NavbarSection settings={settings} />
-      {host.isHostSet ? (
+      {host.signUpIsDone && host.isHostSet ? (
         <>
           <Typography sx={{ textDecoration: "underline" }}>
             Dashboard

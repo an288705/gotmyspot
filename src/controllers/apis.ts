@@ -251,6 +251,7 @@ export async function handleUpdateHost(
         data[0].paymentInfo,
         data[0].spotsIds,
         data[0].reservationsIds,
+        data[0].signUpIsDone,
       );
     }
   }
@@ -344,6 +345,7 @@ export async function setHostState(host: HostModel) {
       data[0].paymentInfo,
       data[0].spots,
       data[0].reservationsIds,
+      data[0].signUpIsDone,
     );
     return {
       settings: [
@@ -407,6 +409,7 @@ export async function handleSignInHost(
     data[0].paymentInfo,
     data[0].spotsIds,
     data[0].reservationsIds,
+    data[0].signUpIsDone,
   );
 
   navigate("/host", { replace: true });
