@@ -312,6 +312,7 @@ export async function setCustomerState(
 }
 
 export async function setHostState(host: HostModel) {
+  console.log("func setHostState");
   const { data: sessionData, error: sessionError } =
     await supabase.auth.getSession();
 
@@ -321,6 +322,8 @@ export async function setHostState(host: HostModel) {
       .from("hostInfo")
       .select()
       .eq("authId", sessionData.session.user.id);
+
+    console.log("data ", data);
 
     if (error) {
       alert("Info request error");
@@ -349,12 +352,13 @@ export async function setHostState(host: HostModel) {
     );
     return {
       settings: [
-        { text: "Profile", href: "/profile" },
+        { text: "Profile", href: "/host-profile" },
         { text: "Logout", href: "/" },
       ],
     };
   }
 
+  console.log("auth not in session");
   return {
     settings: [{ text: "Sign In", href: "/host-sign-in" }],
   };

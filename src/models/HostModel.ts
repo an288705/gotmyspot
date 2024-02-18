@@ -8,7 +8,7 @@ export class HostModel {
   public spotsIds: Array<string>;
   public reservationsIds: Array<string>;
   public isHostSet: boolean;
-  public signUpIsDone: boolean;
+  public isHostSignUpDone: boolean;
 
   constructor() {
     this.hostId = "";
@@ -20,7 +20,7 @@ export class HostModel {
     this.spotsIds = [];
     this.reservationsIds = [];
     this.isHostSet = false;
-    this.signUpIsDone = false;
+    this.isHostSignUpDone = false;
   }
 
   setHost = (
@@ -43,7 +43,7 @@ export class HostModel {
     this.spotsIds = spotsIds;
     this.reservationsIds = reservationsIds;
     this.isHostSet = true;
-    this.signUpIsDone = signUpIsDone;
+    this.isHostSignUpDone = signUpIsDone;
   };
 
   clearHost = () => {
@@ -56,6 +56,6 @@ export class HostModel {
     this.spotsIds = [];
     this.reservationsIds = [];
     this.isHostSet = false;
-    this.signUpIsDone = false;
+    this.isHostSignUpDone = false;
   };
 }

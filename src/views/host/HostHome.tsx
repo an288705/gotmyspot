@@ -1,56 +1,27 @@
 import React from "react";
-import { Button, Typography } from "../../libraries/gotmyspot-ui-library";
 import NavbarSection from "./NavbarSection";
-import RevenueChart from "./RevenueChart";
-import ReservationsSection from "../sections/ReservationsSection";
-import SpotsSection from "../sections/SpotsSection";
-import { getSpotsByIds, setHostState } from "../../controllers/apis";
+import { setHostState } from "../../controllers/apis";
 import { HostContext } from "../../controllers/contexts";
-import Reservation from "../../models/interfaces/Reservation";
 
-export default function HostHome() {
+export default function HostHome(props: { page: JSX.Element }) {
   const host = React.useContext(HostContext);
-  const [reservations, setReservations] = React.useState(Array<Reservation>);
   const [settings, setSettings] = React.useState<
     { text: string; href: string }[]
-  >([{ text: "Sign In", href: "/sign-in" }]);
+  >([{ text: "Sign In", href: "/host-sign-in" }]);
 
   async function setPageState() {
     const state = await setHostState(host);
     setSettings(state!.settings);
-  }
-
-  async function setReservationsState() {
-    const res = await getSpotsByIds(host.reservationsIds);
-    setReservations(res);
+    console.log(host);
   }
 
   React.useEffect(() => {
     setPageState();
-    setReservationsState();
   }, []);
   return (
     <div>
       <NavbarSection settings={settings} />
-      {host.signUpIsDone && host.isHostSet ? (
-        <>
-          <Typography sx={{ textDecoration: "underline" }}>
-            Dashboard
-          </Typography>
-          <RevenueChart />
-          <Button>View report</Button>
-          <Typography sx={{ textDecoration: "underline" }}>
-            Manage spots
-          </Typography>
-          {/* <SpotsSection spots={spots} /> */}
-          <Typography sx={{ textDecoration: "underline" }}>
-            Reservations
-          </Typography>
-          <ReservationsSection reservations={reservations} />
-        </>
-      ) : (
-        <>Please wait to hear back from our team</>
-      )}
+      {host.hostId && props.page}
     </div>
   );
 }

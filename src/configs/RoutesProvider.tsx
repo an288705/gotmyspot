@@ -9,6 +9,7 @@ import HostSignUp from "../views/auth/HostSignUp";
 import ReservationsPage from "../views/customer/ReservationsPage";
 import ProfilePage from "../views/customer/ProfilePage";
 import HostHome from "../views/host/HostHome";
+import HostHomePage from "../views/host/HostHomePage";
 import HostProfilePage from "../views/host/HostProfilePage";
 
 export default function RoutesProvider() {
@@ -29,8 +30,11 @@ export default function RoutesProvider() {
           path="/profile"
           element={<CustomerHome page={<ProfilePage />} />}
         />
-        <Route path="/host" element={<HostHome />} />
-        <Route path="/host/profile" element={<HostProfilePage />} />
+        <Route path="/host" element={<HostHome page={<HostHomePage />} />} />
+        <Route
+          path="/host-profile"
+          element={<HostHome page={<HostProfilePage />} />}
+        />
       </Routes>
     </BrowserRouter>
   );

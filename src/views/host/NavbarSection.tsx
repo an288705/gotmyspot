@@ -14,6 +14,8 @@ import {
 } from "../../libraries/gotmyspot-ui-library";
 import { useNavigate } from "react-router-dom";
 
+const pages = [{ text: "Home", href: "/host" }];
+
 export default function NavbarSection(props: { settings: any }) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -96,7 +98,18 @@ export default function NavbarSection(props: { settings: any }) {
               sx={{
                 display: { xs: "block", md: "none" },
               }}
-            ></Menu>
+            >
+              {pages.map((page) => (
+                <MenuItem
+                  key={page.text}
+                  onClick={() => {
+                    handleClickPage(page.href);
+                  }}
+                >
+                  <Typography textAlign="center">{page.text}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
           </Box>
           <Typography
             variant="h5"
