@@ -14,7 +14,7 @@ import {
 } from "../../libraries/gotmyspot-ui-library";
 import { useNavigate } from "react-router-dom";
 
-const pages = [{ text: "Home", href: "/host" }];
+const pages = [{ text: "HOME", href: "/host" }];
 
 export default function NavbarSection(props: { settings: any }) {
   const navigate = useNavigate();
@@ -128,7 +128,18 @@ export default function NavbarSection(props: { settings: any }) {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            {pages.map((page) => (
+              <MenuItem
+                key={page.text}
+                onClick={() => {
+                  handleClickPage(page.href);
+                }}
+              >
+                <Typography textAlign="center">{page.text}</Typography>
+              </MenuItem>
+            ))}
+          </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
