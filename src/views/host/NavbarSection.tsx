@@ -14,7 +14,10 @@ import {
 } from "../../libraries/gotmyspot-ui-library";
 import { useNavigate } from "react-router-dom";
 
-const pages = [{ text: "HOME", href: "/host" }];
+const pages = [
+  { text: "HOME", href: "/host" },
+  { text: "ADD SPOT", href: "/host-add-spot" },
+];
 
 export default function NavbarSection(props: { settings: any }) {
   const navigate = useNavigate();

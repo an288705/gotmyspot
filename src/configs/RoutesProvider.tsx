@@ -11,6 +11,7 @@ import ProfilePage from "../views/customer/ProfilePage";
 import HostHome from "../views/host/HostHome";
 import HostHomePage from "../views/host/HostHomePage";
 import HostProfilePage from "../views/host/HostProfilePage";
+import AddSpotPage from "../views/host/AddSpotPage";
 
 export default function RoutesProvider() {
   return (
@@ -34,6 +35,10 @@ export default function RoutesProvider() {
         <Route
           path="/host-profile"
           element={<HostHome page={<HostProfilePage />} />}
+        />
+        <Route
+          path="/host-add-spot"
+          element={<HostHome page={<AddSpotPage />} />}
         />
       </Routes>
     </BrowserRouter>
