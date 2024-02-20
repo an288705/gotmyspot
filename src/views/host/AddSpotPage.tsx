@@ -23,6 +23,9 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CopyrightSection from "../sections/CopyrightSection";
 import { handleHostAuth } from "../../controllers/apis";
+import Spot from "../../models/interfaces/Spot";
+import Period from "../../models/interfaces/Period";
+import Rate from "../../models/interfaces/Rate";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -40,11 +43,12 @@ const style = {
 
 export default function HostSignUp() {
   const [openModal, setOpenModal] = React.useState<boolean>(false);
-  const [spotFormCount, setSpotFormCount] = React.useState<Array<number>>([1]);
+  const [spotForm, setSpotForm] = React.useState<Array<any>>([{} as Spot]);
+  const [spotFormCount, setSpotFormCount] = React.useState<Array<number>>([0]);
   const [availabilityCount, setAvailabilityCount] = React.useState<
     Array<number>
-  >([1]);
-  const [rateCount, setRateCount] = React.useState<Array<number>>([1]);
+  >([0]);
+  const [rateCount, setRateCount] = React.useState<Array<number>>([0]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -80,8 +84,8 @@ export default function HostSignUp() {
               component="form"
               noValidate
               onSubmit={(event) => {
-                handleHostAuth(event, spotFormCount);
-                setOpenModal(true);
+                console.log("spot add form", spotForm);
+                event.preventDefault();
               }}
               sx={{ mt: 3 }}
             >
@@ -96,35 +100,100 @@ export default function HostSignUp() {
                         label="Spot Address"
                         name={"spotAddress" + String(count)}
                         autoComplete={"spotAddress" + String(count)}
+                        onChange={(event) =>
+                          setSpotForm((prev) => {
+                            let temp = prev;
+                            console.log(temp);
+                            temp[count].address = event.target.value;
+                            return temp;
+                          })
+                        }
                       />
                       <TextField
                         required
                         fullWidth
-                        id={"Details" + String(count)}
+                        id={"details" + String(count)}
                         label="Details"
-                        name={"Details" + String(count)}
-                        autoComplete={"Details" + String(count)}
+                        name={"details" + String(count)}
+                        autoComplete={"details" + String(count)}
+                        onChange={(event) =>
+                          setSpotForm((prev) => {
+                            let temp = prev;
+                            temp[count].details = event.target.value;
+                            return temp;
+                          })
+                        }
                       />
                     </Grid>
-                    {availabilityCount.map((count) => (
+                    {availabilityCount.map((timeCount) => (
                       <>
                         <Grid item>
                           Available day range
                           <div>
-                            <DatePicker onChange={(date: any) => {}} />
+                            <DatePicker
+                              onChange={(date: any) =>
+                                setSpotForm((prev) => {
+                                  let temp = prev;
+                                  if (temp[count].availability === undefined) {
+                                    temp[count].availability = [{} as Period];
+                                  }
+                                  console.log(temp);
+                                  temp[count].availability[timeCount].startDay =
+                                    date;
+                                  return temp;
+                                })
+                              }
+                            />
                           </div>
                           <div>
-                            <DatePicker onChange={(date: any) => {}} />
+                            <DatePicker
+                              onChange={(date: any) =>
+                                setSpotForm((prev) => {
+                                  let temp = prev;
+                                  if (temp[count].availability === undefined) {
+                                    temp[count].availability = [{} as Period];
+                                  }
+                                  temp[count].availability[timeCount].endDay =
+                                    date;
+                                  return temp;
+                                })
+                              }
+                            />
                           </div>
                         </Grid>
                         <Grid item>
                           Open time
                           <div>
-                            <TimePicker onChange={(time: any) => {}} />
+                            <TimePicker
+                              onChange={(time: any) =>
+                                setSpotForm((prev) => {
+                                  let temp = prev;
+                                  if (temp[count].availability === undefined) {
+                                    temp[count].availability = [{} as Period];
+                                  }
+                                  temp[count].availability[
+                                    timeCount
+                                  ].startTime = time;
+                                  return temp;
+                                })
+                              }
+                            />
                           </div>
                           Close time
                           <div>
-                            <TimePicker onChange={(time: any) => {}} />
+                            <TimePicker
+                              onChange={(time: any) =>
+                                setSpotForm((prev) => {
+                                  let temp = prev;
+                                  if (temp[count].availability === undefined) {
+                                    temp[count].availability = [{} as Period];
+                                  }
+                                  temp[count].availability[timeCount].endTime =
+                                    time;
+                                  return temp;
+                                })
+                              }
+                            />
                           </div>
                         </Grid>
                       </>
@@ -139,27 +208,54 @@ export default function HostSignUp() {
                             </TableRow>
                           </TableHead>
                           <TableBody>
-                            {rateCount.map((count) => (
+                            {rateCount.map((rateCount) => (
                               <>
                                 <TableRow key={1}>
                                   <TableCell align="right">
                                     <TextField
                                       required
                                       fullWidth
-                                      id={"Cost" + String(count)}
+                                      id={"Cost" + String(rateCount)}
                                       label="Cost"
-                                      name={"Cost" + String(count)}
-                                      autoComplete={"Cost" + String(count)}
+                                      name={"Cost" + String(rateCount)}
+                                      autoComplete={"Cost" + String(rateCount)}
+                                      onChange={(event) =>
+                                        setSpotForm((prev) => {
+                                          let temp = prev;
+                                          if (temp[count].rates === undefined) {
+                                            temp[count].rates = [{} as Rate];
+                                          }
+                                          console.log(temp);
+                                          temp[count].rates[rateCount].cost =
+                                            event.target.value;
+                                          return temp;
+                                        })
+                                      }
                                     />
                                   </TableCell>
                                   <TableCell align="right">
                                     <TextField
                                       required
                                       fullWidth
-                                      id={"Time" + String(count)}
-                                      label="Time"
-                                      name={"Time" + String(count)}
-                                      autoComplete={"Time" + String(count)}
+                                      id={"Length" + String(rateCount)}
+                                      label="Length"
+                                      name={"Length" + String(rateCount)}
+                                      autoComplete={
+                                        "Length" + String(rateCount)
+                                      }
+                                      onChange={(event) =>
+                                        setSpotForm((prev) => {
+                                          let temp = prev;
+                                          if (temp[count].rates === undefined) {
+                                            temp[count].rates = [{} as Rate];
+                                          }
+                                          temp[count].rates[
+                                            rateCount
+                                          ].lengthInSeconds =
+                                            event.target.value;
+                                          return temp;
+                                        })
+                                      }
                                     />
                                   </TableCell>
                                 </TableRow>
@@ -171,9 +267,17 @@ export default function HostSignUp() {
                           fullWidth
                           variant="contained"
                           sx={{ mt: 3, mb: 2 }}
-                          onClick={() =>
-                            setRateCount((prev) => [...prev, prev.length + 1])
-                          }
+                          onClick={() => {
+                            setRateCount((prev) => [...prev, prev.length + 1]);
+                            setSpotForm((prev) => {
+                              let temp = prev;
+                              if (temp[count].rates === undefined) {
+                                temp[count].rates = [{} as Rate];
+                              }
+                              temp[count].rates.push({} as Rate);
+                              return temp;
+                            });
+                          }}
                         >
                           Add another rate
                         </Button>
@@ -183,12 +287,20 @@ export default function HostSignUp() {
                       fullWidth
                       variant="contained"
                       sx={{ mt: 3, mb: 2 }}
-                      onClick={() =>
+                      onClick={() => {
                         setAvailabilityCount((prev) => [
                           ...prev,
                           prev.length + 1,
-                        ])
-                      }
+                        ]);
+                        setSpotForm((prev) => {
+                          let temp = prev;
+                          if (temp[count].availability === undefined) {
+                            temp[count].availability = [{} as Period];
+                          }
+                          temp[count].availability.push({} as Period);
+                          return temp;
+                        });
+                      }}
                     >
                       Add another time slot
                     </Button>
@@ -198,11 +310,20 @@ export default function HostSignUp() {
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
-                  onClick={() =>
-                    setSpotFormCount((prev) => [...prev, prev.length + 1])
-                  }
+                  onClick={() => {
+                    setSpotFormCount((prev) => [...prev, prev.length + 1]);
+                    setSpotForm((prev) => [...prev, {} as Spot]);
+                  }}
                 >
                   Add another spot
+                </Button>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Submit spot
                 </Button>
               </Grid>
             </Box>
