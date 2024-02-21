@@ -22,7 +22,7 @@ import {
 } from "../../libraries/gotmyspot-ui-library";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CopyrightSection from "../sections/CopyrightSection";
-import { handleHostAuth } from "../../controllers/apis";
+import { handleAddSpot } from "../../controllers/apis";
 import Spot from "../../models/interfaces/Spot";
 import Period from "../../models/interfaces/Period";
 import Rate from "../../models/interfaces/Rate";
@@ -43,7 +43,7 @@ const style = {
 
 export default function HostSignUp() {
   const [openModal, setOpenModal] = React.useState<boolean>(false);
-  const [spotForm, setSpotForm] = React.useState<Array<any>>([{} as Spot]);
+  const [spotForm, setSpotForm] = React.useState<Array<Spot>>([{} as Spot]);
   const [spotFormCount, setSpotFormCount] = React.useState<Array<number>>([0]);
   const [availabilityCount, setAvailabilityCount] = React.useState<
     Array<number>
@@ -83,10 +83,7 @@ export default function HostSignUp() {
             <Box
               component="form"
               noValidate
-              onSubmit={(event) => {
-                console.log("spot add form", spotForm);
-                event.preventDefault();
-              }}
+              onSubmit={(event) => handleAddSpot(spotForm, event)}
               sx={{ mt: 3 }}
             >
               <Grid container spacing={2}>
@@ -227,7 +224,7 @@ export default function HostSignUp() {
                                           }
                                           console.log(temp);
                                           temp[count].rates[rateCount].cost =
-                                            event.target.value;
+                                            Number(event.target.value);
                                           return temp;
                                         })
                                       }
@@ -251,8 +248,9 @@ export default function HostSignUp() {
                                           }
                                           temp[count].rates[
                                             rateCount
-                                          ].lengthInSeconds =
-                                            event.target.value;
+                                          ].lengthInSeconds = Number(
+                                            event.target.value,
+                                          );
                                           return temp;
                                         })
                                       }

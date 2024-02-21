@@ -7,6 +7,7 @@ import { NavigateFunction } from "react-router-dom";
 
 import Spot from "../models/interfaces/Spot";
 import Rate from "../models/interfaces/Rate";
+import Period from "../models/interfaces/Period";
 
 export async function handleCustomerAuth(
   event: React.FormEvent<HTMLFormElement>,
@@ -204,6 +205,49 @@ export async function handleUpdateCustomer(
       );
     }
   }
+}
+
+export async function handleAddSpot(
+  spotForm: Array<Spot>,
+  event: React.FormEvent<HTMLFormElement>,
+) {
+  event.preventDefault();
+  // go through spot array and replace each
+  // session/rate with stores supabase req
+  console.log("spotForm", spotForm);
+  let sanitizedSpotForm = spotForm.map(async (spot: Spot) => {
+    let temp = JSON.parse(JSON.stringify(spot));
+    delete temp.availability;
+
+    const geocoding = await fetch(
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${spot.address}.json?access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`,
+    ).then((data) => data.json());
+    console.log("geo res: ", geocoding);
+    console.log(
+      "lat long: ",
+      geocoding.features[0].center[1],
+      geocoding.features[0].center[0],
+    );
+
+    temp.longitude = geocoding.features[0].center[0];
+    temp.latitude = geocoding.features[0].center[1];
+    temp["sessions"] = spot.availability.map((session: Period) =>
+      JSON.stringify(session),
+    );
+    temp.rates = spot.rates.map((rate: Rate) => JSON.stringify(rate));
+
+    return temp;
+  });
+  sanitizedSpotForm = await Promise.all(sanitizedSpotForm);
+  console.log("sanitizedSpotForm", sanitizedSpotForm);
+  const { data, error } = await supabase
+    .from("spotInfo")
+    .insert(sanitizedSpotForm)
+    .select();
+
+  if (error) console.log(error);
+
+  console.log("added spot", data);
 }
 
 export async function handleUpdateHost(
