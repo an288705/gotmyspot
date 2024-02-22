@@ -135,9 +135,11 @@ export default function HostSignUp() {
                                   if (temp[count].availability === undefined) {
                                     temp[count].availability = [{} as Period];
                                   }
-                                  console.log(temp);
+                                  
                                   temp[count].availability[timeCount].startDay =
                                     new Date(date);
+                                  temp[count].availability[timeCount].type =
+                                    "schedule";
                                   return temp;
                                 })
                               }
@@ -153,6 +155,8 @@ export default function HostSignUp() {
                                   }
                                   temp[count].availability[timeCount].endDay =
                                     new Date(date);
+                                  temp[count].availability[timeCount].type =
+                                    "schedule";
                                   return temp;
                                 })
                               }
@@ -179,7 +183,8 @@ export default function HostSignUp() {
                                   temp[count].availability[
                                     timeCount
                                   ].startTime = timeString;
-
+                                  temp[count].availability[timeCount].type =
+                                    "schedule";
                                   return temp;
                                 })
                               }
@@ -203,7 +208,8 @@ export default function HostSignUp() {
                                   }
                                   temp[count].availability[timeCount].endTime =
                                     timeString;
-
+                                  temp[count].availability[timeCount].type =
+                                    "schedule";
                                   return temp;
                                 })
                               }
