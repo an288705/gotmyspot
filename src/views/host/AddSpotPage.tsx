@@ -42,6 +42,7 @@ const style = {
 };
 
 export default function HostSignUp() {
+  // TODO: check if supabase parses JSON objects
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [spotForm, setSpotForm] = React.useState<Array<Spot>>([{} as Spot]);
   const [spotFormCount, setSpotFormCount] = React.useState<Array<number>>([0]);
@@ -136,7 +137,7 @@ export default function HostSignUp() {
                                   }
                                   console.log(temp);
                                   temp[count].availability[timeCount].startDay =
-                                    date;
+                                    new Date(date);
                                   return temp;
                                 })
                               }
@@ -151,7 +152,7 @@ export default function HostSignUp() {
                                     temp[count].availability = [{} as Period];
                                   }
                                   temp[count].availability[timeCount].endDay =
-                                    date;
+                                    new Date(date);
                                   return temp;
                                 })
                               }
@@ -164,13 +165,21 @@ export default function HostSignUp() {
                             <TimePicker
                               onChange={(time: any) =>
                                 setSpotForm((prev) => {
+                                  const sanitizedTime = new Date(time);
                                   let temp = prev;
+                                  const timeString =
+                                    sanitizedTime.getHours() +
+                                    ":" +
+                                    sanitizedTime.getMinutes() +
+                                    ":00";
+
                                   if (temp[count].availability === undefined) {
                                     temp[count].availability = [{} as Period];
                                   }
                                   temp[count].availability[
                                     timeCount
-                                  ].startTime = time;
+                                  ].startTime = timeString;
+
                                   return temp;
                                 })
                               }
@@ -181,12 +190,20 @@ export default function HostSignUp() {
                             <TimePicker
                               onChange={(time: any) =>
                                 setSpotForm((prev) => {
+                                  const sanitizedTime = new Date(time);
                                   let temp = prev;
+                                  const timeString =
+                                    sanitizedTime.getHours() +
+                                    ":" +
+                                    sanitizedTime.getMinutes() +
+                                    ":00";
+
                                   if (temp[count].availability === undefined) {
                                     temp[count].availability = [{} as Period];
                                   }
                                   temp[count].availability[timeCount].endTime =
-                                    time;
+                                    timeString;
+
                                   return temp;
                                 })
                               }

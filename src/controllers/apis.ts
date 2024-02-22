@@ -231,10 +231,7 @@ export async function handleAddSpot(
 
     temp.longitude = geocoding.features[0].center[0];
     temp.latitude = geocoding.features[0].center[1];
-    temp["sessions"] = spot.availability.map((session: Period) =>
-      JSON.stringify(session),
-    );
-    temp.rates = spot.rates.map((rate: Rate) => JSON.stringify(rate));
+    temp["sessions"] = spot.availability;
 
     return temp;
   });
@@ -483,42 +480,14 @@ export async function getSpotsByLatLong(
     return [];
   }
 
-  console.log("res of lat/long search", data);
-
-  const spotRatesArray: PostgrestSingleResponse<Rate[]>[] = await Promise.all(
-    data.map((spot) => {
-      console.log("spot.rates in data", spot.sessions);
-      return supabase.from("rate").select().in("id", spot.rates);
-    }),
-  );
-
-  const spotSessionsArray: PostgrestSingleResponse<Spot[]>[] =
-    await Promise.all(
-      data.map((spot) => {
-        console.log("spot.sessions in data", spot.sessions);
-        return supabase.from("session").select().in("id", spot.sessions);
-      }),
-    );
-
-  console.log("res of sessions array search", spotSessionsArray);
-
   // now add session to data
   // filter spot by available session using
   // javascript Date class
   const final = data
-    .map((spot, index) => {
-      const { data: spotRates, error: spotRatesError } = spotRatesArray[index];
-      const { data: spotSessions, error: spotSessionsError } =
-        spotSessionsArray[index];
-
-      if (spotRates && spotSessions) {
-        spot["rates"] = spotRates;
-        spot["maxReservationTimeInSeconds"] = Math.max(
-          ...spotRates.map((rate: Rate) => rate.lengthInSeconds),
-        );
-        spot["sessions"] = spotSessions;
-        console.log("spot with added sessions", spot);
-      }
+    .map((spot) => {
+      spot["maxReservationTimeInSeconds"] = Math.max(
+        ...spot["rates"].map((rate: Rate) => rate.lengthInSeconds),
+      );
 
       return spot;
     })
@@ -530,6 +499,11 @@ export async function getSpotsByLatLong(
         Math.abs(endTime.getTime() - startTime.getTime()) / 1000;
       console.log("reservation time", reservationTimeInSeconds);
       if (reservationTimeInSeconds > spot.maxReservationTimeInSeconds) {
+        console.log(
+          reservationTimeInSeconds,
+          "exceeds time limit of ",
+          spot.maxReservationTimeInSeconds,
+        );
         return false;
       }
 
@@ -681,39 +655,13 @@ export async function getSavedSpotsByIds(ids: Array<string>) {
     return [];
   }
 
-  const spotRatesArray: PostgrestSingleResponse<Rate[]>[] = await Promise.all(
-    data.map((spot) => {
-      console.log("spot.rates in data", spot.sessions);
-      return supabase.from("rate").select().in("id", spot.rates);
-    }),
-  );
-
-  const spotSessionsArray: PostgrestSingleResponse<Spot[]>[] =
-    await Promise.all(
-      data.map((spot) => {
-        console.log("spot.sessions in data", spot.sessions);
-        return supabase.from("session").select().in("id", spot.sessions);
-      }),
-    );
-
-  console.log("res of sessions array search", spotSessionsArray);
-
   // now add session to data
   // filter spot by available session using
   // javascript Date class
   const final = data.map((spot, index) => {
-    const { data: spotRates, error: spotRatesError } = spotRatesArray[index];
-    const { data: spotSessions, error: spotSessionsError } =
-      spotSessionsArray[index];
-
-    if (spotRates && spotSessions) {
-      spot["rates"] = spotRates;
-      spot["maxReservationTimeInSeconds"] = Math.max(
-        ...spotRates.map((rate: Rate) => rate.lengthInSeconds),
-      );
-      spot["sessions"] = spotSessions;
-      console.log("spot with added sessions", spot);
-    }
+    spot["maxReservationTimeInSeconds"] = Math.max(
+      ...spot["rates"].map((rate: Rate) => rate.lengthInSeconds),
+    );
 
     return spot;
   });

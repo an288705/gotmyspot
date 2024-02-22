@@ -1,8 +1,7 @@
 export default interface Period {
-  periodId: string;
   type: string;
-  startDay: string;
-  endDay: string;
+  startDay: Date;
+  endDay: Date;
   startTime: string;
   endTime: string;
 }

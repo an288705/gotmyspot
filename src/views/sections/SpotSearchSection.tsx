@@ -89,7 +89,10 @@ export default function SpotSearchSection(props: {
             </div>
             <div>
               <TimePicker
-                onChange={(time: any) => setEndTime(new Date(time))}
+                onChange={(time: any) => {
+                  console.log("et", new Date(time));
+                  setEndTime(new Date(time));
+                }}
               />
             </div>
           </Grid>
