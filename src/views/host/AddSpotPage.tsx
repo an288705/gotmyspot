@@ -19,6 +19,9 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Fab,
+  Checkbox,
+  Avatar,
 } from "../../libraries/gotmyspot-ui-library";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CopyrightSection from "../sections/CopyrightSection";
@@ -26,6 +29,7 @@ import { handleAddSpot } from "../../controllers/apis";
 import Spot from "../../models/interfaces/Spot";
 import Period from "../../models/interfaces/Period";
 import Rate from "../../models/interfaces/Rate";
+import { grey } from "@mui/material/colors";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -44,6 +48,17 @@ const style = {
 export default function HostSignUp() {
   // TODO: check if supabase parses JSON objects
   const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const [daysMarked, setDaysMarked] = React.useState<
+    Array<[string, boolean, number]>
+  >([
+    ["M", false, 0],
+    ["T", false, 0],
+    ["W", false, 0],
+    ["T", false, 0],
+    ["F", false, 0],
+    ["S", false, 0],
+    ["S", false, 0],
+  ]);
   const [spotForm, setSpotForm] = React.useState<Array<Spot>>([{} as Spot]);
   const [spotFormCount, setSpotFormCount] = React.useState<Array<number>>([0]);
   const [availabilityCount, setAvailabilityCount] = React.useState<
@@ -126,41 +141,83 @@ export default function HostSignUp() {
                     {availabilityCount.map((timeCount) => (
                       <>
                         <Grid item>
-                          Available day range
+                          Days
                           <div>
-                            <DatePicker
-                              onChange={(date: any) =>
-                                setSpotForm((prev) => {
-                                  let temp = prev;
+                            {daysMarked.map(([day, isMarked, count], index) => (
+                              <Checkbox
+                                icon={
+                                  <Avatar
+                                    sx={{
+                                      backgroundColor: "lightgray",
+                                      border: `1px solid`,
+                                      color: "black",
+                                    }}
+                                  >
+                                    {day}
+                                  </Avatar>
+                                }
+                                checkedIcon={
+                                  daysMarked[index][2] == timeCount ? (
+                                    <Avatar
+                                      sx={{
+                                        backgroundColor: "gray",
+                                        border: `1px solid`,
+                                        color: "black",
+                                      }}
+                                    >
+                                      {day}
+                                    </Avatar>
+                                  ) : (
+                                    <Avatar
+                                      sx={{
+                                        backgroundColor: "white",
+                                        border: `1px solid`,
+                                        color: "white",
+                                      }}
+                                    >
+                                      {day}
+                                    </Avatar>
+                                  )
+                                }
+                                checked={isMarked}
+                                onChange={() => {
+                                  setDaysMarked((daysMarked) => {
+                                    let temp = JSON.parse(
+                                      JSON.stringify(daysMarked),
+                                    );
+                                    temp[index] = [
+                                      daysMarked[index][0],
+                                      !isMarked,
+                                      timeCount,
+                                    ];
+                                    console.log(temp);
+                                    return temp;
+                                  });
+
+                                  setSpotForm((prev) => {
+                                    let temp = prev;
                                   if (temp[count].availability === undefined) {
                                     temp[count].availability = [{} as Period];
                                   }
                                   
-                                  temp[count].availability[timeCount].startDay =
-                                    new Date(date);
+
+                                  let days:string = ''
+                                  daysMarked.map(([string,isMarked,index])=>{
+                                    if(isMarked && timeCount==index) {
+                                      days+=string;
+                                    }
+                                  })
+                                  
+                                  temp[count].availability[timeCount].days = days;
                                   temp[count].availability[timeCount].type =
                                     "schedule";
                                   return temp;
-                                })
-                              }
-                            />
-                          </div>
-                          <div>
-                            <DatePicker
-                              onChange={(date: any) =>
-                                setSpotForm((prev) => {
-                                  let temp = prev;
-                                  if (temp[count].availability === undefined) {
-                                    temp[count].availability = [{} as Period];
-                                  }
-                                  temp[count].availability[timeCount].endDay =
-                                    new Date(date);
-                                  temp[count].availability[timeCount].type =
-                                    "schedule";
-                                  return temp;
-                                })
-                              }
-                            />
+                                  })
+                                }
+                                  
+                                }
+                              />
+                            ))}
                           </div>
                         </Grid>
                         <Grid item>

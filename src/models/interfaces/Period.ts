@@ -4,4 +4,5 @@ export default interface Period {
   endDay: Date;
   startTime: string;
   endTime: string;
+  days: string;
 }
