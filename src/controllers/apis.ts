@@ -437,7 +437,7 @@ export async function handleSignInHost(
   const { data, error } = await supabase
     .from("hostInfo")
     .select()
-    .eq("id", authData.user.id);
+    .eq("authId", authData.user.id);
 
   if (!data) {
     alert("Info request error");
