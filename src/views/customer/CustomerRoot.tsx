@@ -4,7 +4,7 @@ import NavbarSection from "./NavbarSection";
 import { setCustomerState } from "../../controllers/apis";
 import { useNavigate } from "react-router-dom";
 
-export default function CustomerHome(props: { page: JSX.Element }) {
+export default function CustomerRoot(props: { page: JSX.Element }) {
   const customer = React.useContext(CustomerContext);
   const navigate = useNavigate();
   const [settings, setSettings] = React.useState<
