@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SellParkingPage from "../views/SellParkingPage";
-import CustomerHome from "../views/customer/CustomerHome";
+import CustomerHome from "../views/customer/CustomerRoot";
 import HomePage from "../views/customer/HomePage";
 import SignIn from "../views/auth/SignIn";
 import SignUp from "../views/auth/SignUp";
