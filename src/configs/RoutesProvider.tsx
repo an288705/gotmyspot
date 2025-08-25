@@ -8,7 +8,7 @@ import HostSignIn from "../views/auth/HostSignIn";
 import HostSignUp from "../views/auth/HostSignUp";
 import ReservationsPage from "../views/customer/ReservationsPage";
 import ProfilePage from "../views/customer/ProfilePage";
-import HostHome from "../views/host/HostHome";
+import HostRoot from "../views/host/HostRoot";
 import HostHomePage from "../views/host/HostHomePage";
 import HostProfilePage from "../views/host/HostProfilePage";
 import AddSpotPage from "../views/host/AddSpotPage";
@@ -31,14 +31,14 @@ export default function RoutesProvider() {
           path="/profile"
           element={<CustomerRoot page={<ProfilePage />} />}
         />
-        <Route path="/host" element={<HostHome page={<HostHomePage />} />} />
+        <Route path="/host" element={<HostRoot page={<HostHomePage />} />} />
         <Route
           path="/host-profile"
-          element={<HostHome page={<HostProfilePage />} />}
+          element={<HostRoot page={<HostProfilePage />} />}
         />
         <Route
           path="/host-add-spot"
-          element={<HostHome page={<AddSpotPage />} />}
+          element={<HostRoot page={<AddSpotPage />} />}
         />
       </Routes>
     </BrowserRouter>

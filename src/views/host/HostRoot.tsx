@@ -3,7 +3,7 @@ import NavbarSection from "./NavbarSection";
 import { setHostState } from "../../controllers/apis";
 import { HostContext } from "../../controllers/contexts";
 
-export default function HostHome(props: { page: JSX.Element }) {
+export default function HostRoot(props: { page: JSX.Element }) {
   const host = React.useContext(HostContext);
   const [settings, setSettings] = React.useState<
     { text: string; href: string }[]
