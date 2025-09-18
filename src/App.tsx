@@ -3,7 +3,7 @@ import "./App.css";
 import RoutesProvider from "./configs/RoutesProvider";
 import { CustomerModel } from "./models/CustomerModel";
 import { CustomerContext } from "./controllers/contexts";
-
+// 
 function App() {
   const customer = new CustomerModel();
   return (
